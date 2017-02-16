@@ -72,7 +72,7 @@ http通信のログ・syslog・windowsのログ・githubのコミット履歴も
 
 = Elasticsearch（情報を貯める）
 == indexとは
-　indexとはデータベースのように保持しておく場所です。
+　indexとはデータベースのようにデータを保持しておく場所です。
 == Elasticsearchのインストール
 == Elasticsearchのセットアップ
 == elasticsearch.yml
@@ -85,7 +85,16 @@ http通信のログ・syslog・windowsのログ・githubのコミット履歴も
 == 動作確認
 == Logstashの起動
 = Kibana（情報を見せる）
+　KibanaはDiscover・Visualize・Dashboard・Settingsの4つから成り立っています。
 == Kibanaのインストール
+　Kibanaのインストールは他と同様、次の種類があります。先ほどと同様、今回も検証用のため、
+tar.gzファイルの解凍をしてインストールしたいと思います。Windowsにインストールする場合、
+zipファイルの解凍をしてインストールすることになります。
+* tar.gz/zipファイルの解凍
+* debパッケージ
+* rpmパッケージ
+* dockerコンテナのPULL
+
 == Kibanaの起動
 == グラフを作ってみる
 = 知っておくと便利なもの
