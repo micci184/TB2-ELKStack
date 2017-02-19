@@ -97,6 +97,40 @@ age:"10"と入れた場合、"10"は数字なのでNumber型と判断されま�
 
 自分でつけなおすことも可能です。
 == Elasticsearchのインストール
+=== 事前準備
+　ElasticsearchはJava8で動いています。そのためインストールにはOracle JDK 1.8.0_73以上が必要です。
+まずはjavaがインストールされているか確認します。
+* コード
+=== インストール
+　javaがインストールされていることが確認できたあと、いよいよElasticsearchをインストールします。
+インストール方法はいくつかあります。
+* zip/tar.gzパッケージ
+　zipファイルを解凍してインストールする方法です。お手軽に環境を立ち上げて検証するような場合は
+こちらの方法を利用すると良いでしょう。ただし、serviceコマンドはついてこないため実運用には向きません。
+Windowsへのインストールの場合、自動的にzipファイルでのインストール方法を
+選択することになります。
+* debパッケージ
+　Debian系のLinux（Ubuntuなど）へインストールする場合、debパッケージを利用できます。
+serviceコマンドが利用できるため、長期運用を考えている場合はこちらを利用してインストールすると良いでしょう。
+
+* rpmパッケージ
+　RedHat系のLinux（RHELやCentOSなど）やOpenSUSEなどへインストールする場合、rpmパッケージを利用できます。
+rpmパッケージでインストールした場合もserviceコマンドが利用できるため、
+長期運用を考えている場合はこちらを利用してインストールすると良いでしょう。
+
+* dockerイメージ
+　dockerの実行環境がある場合、コンテナのイメージを利用することもできます。dockerを使い慣れており
+検証環境としてElasticsearchが必要な場合はこちらを利用すると良いでしょう。
+
+次の図にインストール方法を選ぶためのフローチャート図を入れたので、参考にしてみてください。
+* 図を入れる
+
+また、これ以外にもPuppet・Chef・AnsibleのコードがGithubリポジトリとして提供されているため
+これらのツールから環境を準備することも可能です。
+Puppet: https://github.com/elastic/puppet-elasticsearch
+Chef: https://github.com/elastic/cookbook-elasticsearch
+Ansible: https://github.com/elastic/ansible-elasticsearch
+
 == Elasticsearchのセットアップ
 == elasticsearch.yml
 == Elasticsearchの起動
