@@ -8,9 +8,9 @@ issueを切ってもらいたいな
 
 ## フォルダ構成
 Re:VIEWでビルドする予定なので、おもにこの辺をいじるよ
-* config.yml：ビルド時の設定とか
-* style.css：見た目系の設定とか
-* test.re：本文
+* /text/config.yml：ビルド時の設定とか
+* /text/style.css：見た目系の設定とか
+* /text/test.re：本文
 
 ## Re:VIEWの記法（今使ってるもの）
 * 空行を一行あける：改行
