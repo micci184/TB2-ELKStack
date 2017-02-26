@@ -28,10 +28,12 @@
 ** Logstashのフォルダ階層←蛇足感があるので削ってもいいかも？
 ** Logstashでデータを集めよう
 *** logstash.confの構造
-*** 全体像
+**** input
+**** filter
+**** output
 *** inputプラグインを書いてみよう
+**** Twitter APIの準備
 **** ファイル取得元を指定する
-**** start_positionを指定する
 *** outputプラグインを書いてみよう
 **** ログの送付先を指定する
 *** filterプラグインを書いてみよう
@@ -42,7 +44,7 @@
 **** removeフィルタ：いらない情報は捨てる
 **** timestampフィルタ：ログが出力された時刻を編集する
 
-* データをKibanaでみてみよう（Twitter編）
+* 集めたデータをみてみよう（Twitter編）
 ** KibanaのUI
 *** Discover：データの詳細を閲覧する
 *** Visualize：データを使ってグラフを作成する
@@ -76,3 +78,4 @@
 ページが余ったら（Tipsネタ）
 プラグインの種類一覧表
 トラブルシューティング
+start_positionを指定する Logstashのinputがファイルの場合
