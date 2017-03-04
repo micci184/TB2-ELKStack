@@ -111,7 +111,9 @@ Dockerのコンテナ検索、Facebook上での検索などが導入事例とし
 
 　クラスタとは、物理的には複数存在しているにも関わらず、論理的には1つとして見せることができる技術です。
 処理の負荷分散ができるため、性能を求められる環境で選択されることが多いです。
-#@# クラスターを解説した図を入れる
+
+/Users/mallow/review/text/text/images/cluster01.png
+/Users/mallow/review/text/text/images/cluster02.png
 
 　もちろん、ログ解析を行うときもよく使用されます。理由としては次に出てくるKibanaの情報取得元が
 ElasticSearchに限られているからです。
@@ -160,13 +162,13 @@ ElasticSearch→Logstash→Kibanaの順にインストールすることをお�
 理由は図X.Xにあるように、Logstashで取りこんだデータをElasticSearchに連携するため
 先にデータの連携先をセットアップしておかないと正しく動作確認ができない可能性があるためです。
 
-#@# データの流れ図を入れる
+/Users/mallow/review/text/text/images/data.png
 
 　また、Kibanaは起動前にElasticSearchのURLを指定する必要があるため、ElasticSearchがセットアップされていないと
 そもそも動作しません。今回は各ツールごとに完結できる動作確認方法を取りますが、万が一に備えるという意味では
 図X.Xのようにデータの連携先→連携元→データ閲覧ツールという流れでセットアップした方が良いでしょう。
 
-#@# インストールの順番図を入れる
+/Users/mallow/review/text/text/images/data.png
 
 ** ElasticSearhのインストール
 　先にも述べましたが、インストール方法は複数準備されています。導入の目的とご自身の環境に合わせて
@@ -373,8 +375,6 @@ kibana.yml内にURLを指定する箇所があるのでそちらを記述しま�
 　「環境はセットアップできた！でもどうやってログを集めればいいんだっけ？
 それにKibanaにアクセスしても何も出てこないよ？」
 
-#@# 挿絵入れる
-
 　おや？もふもふちゃんは大事なことを忘れてしまっているようです。
 Kibanaにデータを表示するためには、ElasticSearhにデータが入っていないとダメですよね。
 
@@ -424,7 +424,7 @@ tar.gzファイルとして圧縮されます。
 　logstash.confはinput、filter、outputの3つにセクションが分かれています。
 まずは図X.Xをみてください。
 
-#@# 僕の自慢の図をわかりやすくして入れる
+/Users/mallow/review/text/text/images/logstash_config.png
 
 **** input
 　inputは、ログをどこから取得するか決める部分です。
@@ -444,7 +444,7 @@ tar.gzファイルとして圧縮されます。
 　では、早速Twitterのログを取り込んでみましょう。
 図X.Xで囲った部分となります。
 
-#@# 僕自慢の図に枠をつけて差し込む
+/Users/mallow/review/text/text/images/logstash_config_input.png
 
 **** Twitter APIの準備
 　まずはTwitter APiを準備しましょう。
@@ -498,7 +498,8 @@ tar.gzファイルとして圧縮されます。
 　欲しい情報を集めることができたので、今度はログをElasticSearhに送ってみましょう。
 図X.Xで囲った部分となります。
 
-#@# 僕自慢の図に枠をつけて差し込む
+/Users/mallow/review/text/text/images/logstash_config_output.png
+
 
 **** ログの送付先を指定する
 　今回はElasticSearhにログを送付するため、ElasticSearhプラグインを利用します。
@@ -553,7 +554,7 @@ ElasticSearh→Logstash→Kibanaの順に起動します。
 *** filterプラグインを書いてみよう
 　今から編集する部分は、図X.Xで囲った部分となります。ここがlogstash.confの肝となる部分です。
 
-#@# 僕自慢の図に枠をつけて差し込む
+/Users/mallow/review/text/text/images/logstash_config_filter.png
 
 **** fieldとtextにデータをうまく分ける（ElasticSearhのデータの持ち方を説明）
 　先ほどKibanaを閲覧したとき、データがうまく分かれていなかったと思います。
