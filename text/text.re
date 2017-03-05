@@ -551,30 +551,66 @@ hello world
 　Elasticの公式サイトにアクセスし、zipファイルをダウンロードします。
 OSの種類によってzipファイルが異なるため、注意が必要です。
 
-#@# サイトのキャプチャを入れる
+/Usersmallow/review/text/text/images/kibana_download.png
 
 2. zipファイルの解凍
 
 　ElasticSearhをインストールする際に作成したディレクトリに、ダウンロードしたzipファイルを解凍します。
 
-#@# コードを入れる
+unzip kibana-5.2.2-darwin-x86_64.tar.gz
+
+ishiiaoi-no-MacBook-Pro:~ mallow$ mv /Users/mallow/Downloads/kibana-5.2.2-darwin-x86_64 /Users/mallow/ELK_Stack/
+ishiiaoi-no-MacBook-Pro:~ mallow$ cd ELK_Stack/
+ishiiaoi-no-MacBook-Pro:ELK_Stack mallow$ ls -al
+total 0
+drwxr-xr-x   5 mallow  staff   170  3  5 16:35 .
+drwxr-xr-x+ 46 mallow  staff  1564  3  5 16:30 ..
+drwxr-xr-x@ 12 mallow  staff   408  3  5 15:49 elasticsearch-5.2.2
+drwxr-xr-x@ 16 mallow  staff   544  2 25 02:38 kibana-5.2.2-darwin-x86_64
+drwxr-xr-x@ 19 mallow  staff   646  3  5 16:22 logstash-5.2.2
+ishiiaoi-no-MacBook-Pro:ELK_Stack mallow$
+
 
 3. kibana.ymlの編集
 
 　前にも述べた通り、KibanaはElasticSearhからデータを取得するためElasticSearhのURLを指定する必要があります。
 kibana.yml内にURLを指定する箇所があるのでそちらを記述しましょう。
 
-#@# コードを入れる（kibana.ymlの編集）
+ishiiaoi-no-MacBook-Pro:kibana-5.2.2-darwin-x86_64 mallow$ cp -ap config/kibana.yml config/kibana.yml.org
+ishiiaoi-no-MacBook-Pro:kibana-5.2.2-darwin-x86_64 mallow$ ls -al config/
+total 32
+drwxr-xr-x@  4 mallow  staff   136  3  5 16:42 .
+drwxr-xr-x@ 16 mallow  staff   544  2 25 02:38 ..
+-rw-r--r--@  1 mallow  staff  4412  2 25 02:38 kibana.yml
+-rw-r--r--@  1 mallow  staff  4412  2 25 02:38 kibana.yml.org
+ishiiaoi-no-MacBook-Pro:kibana-5.2.2-darwin-x86_64 mallow$
+
+# kibana.ymlの編集
+# The URL of the Elasticsearch instance to use for all your queries.
+#elasticsearch.url: "http://localhost:9200"
+elasticsearch.url: "http://localhost:9200"
 
 4. 動作確認
 
 　/binフォルダ下にあるkibanaスクリプトから起動します。（Windowsはkibana.batから起動します。）
 
-#@# コードを入れる（起動）
+ishiiaoi-no-MacBook-Pro:kibana-5.2.2-darwin-x86_64 mallow$ bin/kibana
+  log   [07:46:54.934] [info][status][plugin:kibana@5.2.2] Status changed from uninitialized to green - Ready
+  log   [07:46:55.016] [info][status][plugin:elasticsearch@5.2.2] Status changed from uninitialized to yellow - Waiting for Elasticsearch
+  log   [07:46:55.046] [info][status][plugin:console@5.2.2] Status changed from uninitialized to green - Ready
+  log   [07:46:55.900] [info][status][plugin:timelion@5.2.2] Status changed from uninitialized to green - Ready
+  log   [07:46:55.906] [info][listening] Server running at http://localhost:5601
+  log   [07:46:55.907] [info][status][ui settings] Status changed from uninitialized to yellow - Elasticsearch plugin is yellow
+  log   [07:47:00.943] [info][status][plugin:elasticsearch@5.2.2] Status changed from yellow to yellow - No existing Kibana index found
+  log   [07:47:01.661] [info][status][plugin:elasticsearch@5.2.2] Status changed from yellow to green - Kibana index ready
+  log   [07:47:01.662] [info][status][ui settings] Status changed from yellow to green - Ready
+
 
 起動後、ブラウザにhttp://localhost:5601と入力します。図X.Xのような画面が見えていればインストールは完了です。
 
-#@# キャプチャを入れる
+http://localhost:5601
+
+/Usersmallow/review/text/text/images/kibana_setup.png
 
 * データを集めて可視化しよう（Twitter編）
 
