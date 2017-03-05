@@ -630,34 +630,6 @@ Kibanaにデータを表示するためには、ElasticSearhにデータが入�
 　目標は「Twitterのつぶやきから"イチゴメロンパン"という文言が含まれているものだけを抽出し
 Kibanaで分析しやすい形にしてElasticSearhに送る」ことです。
 
-** Logstashのフォルダ階層←蛇足感があるので削ってもいいかも？
-　まずはLogstashの階層構造を押さえておきましょう。
-基本的にはLinux用のツールと同じような階層構造になっています。
-
-#@# treeコマンドで階層構造をだす
-
-　よく扱うディレクトリのみピックアップして解説します。
-
-*** /etc
-　Logstashがどのようにログを取り込むか決定するlogstash.confなど、設定系ファイルが格納されています。
-基本的にはこちらのディレクトリを触ることが多いでしょう。
-
-#@# treeコマンドで階層構造をだす
-
-*** /opt
-　Logstashの起動用スクリプトが配置されています。起動・停止はこちらの/binディレクトリ下にあるスクリプトを実行します。
-動作確認時も何回か扱いましたね。
-
-*** /var
-　Logstashのログがこちらのディレクトリに配置されます。コンフィグが間違っているときや
-Logstashの動作に問題が発生した場合はこちらのログファイルを参照してみましょう。
-ログにはlogstash.logとlogstash.errの2種類があります。logstash.logは動作の停止ログなど
-動作情報も出力されます。logstash.errは深刻な問題の場合のみ出力されるので、基本的にはlogstash.logを
-参照すれば良いです。
-
-　logstash.logは日付ごとに自動で改廃されます。最大1週間分保持されますが、日付が2日以上経ったものは
-tar.gzファイルとして圧縮されます。
-
 ** Logstashでデータを集めよう
 　では、いよいよlogstash.confを編集していきます。
 まずは、編集イメージを持つためにlogstash.confの構造をみてみましょう。
@@ -694,19 +666,39 @@ tar.gzファイルとして圧縮されます。
 1. URLにアクセス
 
 　まずはTwitter APIのURLにアクセスします。
+あらかじめTwitterアカウントにログインしておく必要があります。
 
-#@# URLを挿入
+https://dev.twitter.com
+
+　アクセス後、「Manage Your Apps」リンクをクリックします。
+
+/Usersmallow/review/text/text/images/Twitter_Developers01.png
 
 2. 必要事項の入力
 
 欄内の必要事項を記入します。
 
-#@# 画面キャプチャを入れる（あと必要事項がわかったら追記する）
+Name:アプリケーション名
+Description:アプリケーションの概要
+Website:アプリケーションを動かすためのトップページのURLを記載
+（localhostなどのダミーデータは拒否されるため、自分のブログのアドレスなどを書けば良いです。）
+Callback URL：ユーザ認証後の戻り先のURLアドレス
+
+/Usersmallow/review/text/text/images/Twitter_Developers02.png
+/Usersmallow/review/text/text/images/Twitter_Developers03.png
+/Usersmallow/review/text/text/images/Twitter_Developers04.png
+
+　登録に成功すると、次のような画面が表示されます。
+/Usersmallow/review/text/text/images/Twitter_Developers05.png
+
 
 3. 規約に同意して鍵をもらう
 
-　情報登録が完了すると、鍵情報をダウンロードすることができます。
-後ほど必要になるため、控えを取っておきましょう。
+　情報登録が完了すると、鍵情報が表示されます。
+
+Consumer Key (API Key):APIの認証に必要です。
+Consumer Secret (API Secret):こちらも認証に必要です。他の人には教えてはいけません。
+
 
 #@# 画面キャプチャを入れる（あと必要事項がわかったら追記する）
 
