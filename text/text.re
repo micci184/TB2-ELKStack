@@ -224,39 +224,165 @@ zipファイルを用いたインストールの場合、OSが違っていても
 1. 公式サイトからzipファイルをダウンロード
 
 　Elasticの公式サイトにアクセスし、zipファイルをダウンロードします。
+URL:https://www.elastic.co/jp/downloads/elasticsearch
 
-#@# サイトのキャプチャを入れる
+/Users/mallow/review/text/text/images/elasticsearch_download.png
 
 2. 作業用ディレクトリを作成（好みで良いです）
 
 　今回は検証用の環境構築なので、アンインストールを簡単にするために作業用ディレクトリを作成します。
 
-#@# ディレクトリ作成用コードを入れる
+ishiiaoi-no-MacBook-Pro:~ mallow$ mkdir ELK_Stack
+
+ishiiaoi-no-MacBook-Pro:~ mallow$ ls -al
+total 136
+drwxr-xr-x+  46 mallow  staff   1564  3  5 15:31 .
+drwxr-xr-x    5 root    admin    170  2 11 16:39 ..
+-r--------    1 mallow  staff      7  2 11 16:49 .CFUserTextEncoding
+-rw-r--r--@   1 mallow  staff  24580  3  5 15:22 .DS_Store
+drwx------  183 mallow  staff   6222  3  5 15:30 .Trash
+drwxr-xr-x    3 mallow  staff    102  5 25  2015 .android
+drwxr-xr-x   16 mallow  staff    544  3 12  2016 .atom
+-rw-------    1 mallow  staff   9804  3  4 10:37 .bash_history
+-rw-r--r--    1 mallow  staff    112  7 12  2015 .bash_profile
+drwx------   61 mallow  staff   2074  3  5 15:18 .bash_sessions
+-rw-r--r--    1 mallow  staff     46  2  4 21:28 .bashrc
+drwx------    3 mallow  staff    102  5 29  2015 .cups
+drwxr-xr-x    3 mallow  staff    102  7 12  2015 .distlib
+drwxr-xr-x    3 mallow  staff    102  2  4 13:32 .gem
+-rw-r--r--    1 mallow  staff    408  3  4 13:18 .gitconfig
+-rw-r--r--    1 mallow  staff     13  2 10 11:38 .gitignore_global
+-rw-r--r--    1 mallow  staff     27  2 10 11:38 .hgignore_global
+drwxr-xr-x    3 mallow  staff    102  6 19  2016 .jssc
+drwxr-xr-x   35 mallow  staff   1190  7 21  2016 .npm
+drwxr-xr-x    4 mallow  staff    136  6 19  2016 .oracle_jre_usage
+drwxr-xr-x    7 mallow  staff    238  7 12  2015 .plenv
+drwxr-xr-x    5 mallow  staff    170  7 12  2015 .pyenv
+drwxr-xr-x    5 mallow  staff    170  7 12  2015 .rbenv
+drwx------    3 mallow  staff    102 10  3  2015 .ssh
+-rw-r--r--@   1 mallow  staff      0  2 13 15:41 .stCommitMsg
+drwxr-xr-x    6 mallow  staff    204  7 12  2015 .subversion
+drwxr-xr-x    9 mallow  staff    306 10  3  2015 .vagrant.d
+-rw-------    1 mallow  staff   1877  7 12  2015 .viminfo
+drwx------    4 mallow  staff    136  7 25  2015 Applications
+drwxrwxr-x@   5 mallow  staff    170  3  5 15:16 Creative Cloud Files
+drwx------@   4 mallow  staff    136  3  4 13:08 Desktop
+drwx------@  22 mallow  staff    748  2 11 15:53 Documents
+drwx------+  28 mallow  staff    952  3  5 15:30 Downloads
+drwxr-xr-x    2 mallow  staff     68  3  5 15:31 ELK_Stack
+drwx------@  32 mallow  staff   1088  3  5 15:15 Google ドライブ
+drwx------@  67 mallow  staff   2278  2 11 20:26 Library
+drwx------+   5 mallow  staff    170  5  8  2016 Movies
+drwx------+   4 mallow  staff    136  5 24  2015 Music
+drwx------+  44 mallow  staff   1496  2 11 15:53 Pictures
+drwxr-xr-x+   5 mallow  staff    170  5 24  2015 Public
+drwxr-xr-x    8 mallow  staff    272  3  4 13:16 TB2-ELKStack
+drwxr-xr-x    2 mallow  staff     68  6 19  2016 VirtualBox VMs
+drwxr-xr-x    2 mallow  staff     68  6  7  2015 eclipse
+drwxr-xr-x    5 mallow  staff    170  7 23  2016 jhonny5
+drwxr-xr-x   24 mallow  staff    816  2 13 15:42 review
+drwxr-xr-x    3 mallow  staff    102  2  4 21:47 scriptlogs
+
+ishiiaoi-no-MacBook-Pro:~ mallow$ mv /Users/mallow/Downloads/elasticsearch-5.2.2/ /Users/mallow/ELK_Stack/
+
+ishiiaoi-no-MacBook-Pro:~ mallow$ cd ELK_Stack/elasticsearch-5.2.2/
 
 3. zipファイルの解凍
 
 　ディレクトリ内にダウンロードしたzipファイルを解凍します。
 
-#@# コードを入れる
+# 必要であれば
+unzip elasticsearch-5.2.2
 
 4. ElasticSearhの起動
 
 　/binディレクトリ下にあるelasticsearchスクリプトを実行し、サービスを起動します。
 OSがWindowsの場合、elasticsearch.batを実行します。
 
-#@# コードを入れる
+ishiiaoi-no-MacBook-Pro:~ mallow$ ls -al /Users/mallow/ELK_Stack/elasticsearch-5.2.2/
+total 392
+drwxr-xr-x@ 12 mallow  staff     408  3  5 15:49 .
+drwxr-xr-x   3 mallow  staff     102  3  5 15:46 ..
+-rw-r--r--@  1 mallow  staff   11358  2 25 02:24 LICENSE.txt
+-rw-r--r--@  1 mallow  staff  172700  2 25 02:24 NOTICE.txt
+-rw-r--r--@  1 mallow  staff    9108  2 25 02:24 README.textile
+drwxr-xr-x@ 15 mallow  staff     510  2 25 02:29 bin
+drwxr-xr-x@  6 mallow  staff     204  3  5 15:49 config
+drwxr-xr-x   3 mallow  staff     102  3  5 15:49 data
+drwxr-xr-x@ 35 mallow  staff    1190  2 25 02:29 lib
+drwxr-xr-x   6 mallow  staff     204  3  5 15:49 logs
+drwxr-xr-x@ 12 mallow  staff     408  2 25 02:29 modules
+drwxr-xr-x@  2 mallow  staff      68  2 25 02:29 plugins
+
+ishiiaoi-no-MacBook-Pro:~ mallow$ ls -al /Users/mallow/ELK_Stack/elasticsearch-5.2.2/bin/
+total 680
+drwxr-xr-x@ 15 mallow  staff     510  2 25 02:29 .
+drwxr-xr-x@ 12 mallow  staff     408  3  5 15:49 ..
+-rwxr-xr-x@  1 mallow  staff    7852  2 25 02:24 elasticsearch
+-rwxr-xr-x@  1 mallow  staff    2540  2 25 02:24 elasticsearch-plugin
+-rw-r--r--@  1 mallow  staff     733  2 25 02:24 elasticsearch-plugin.bat
+-rw-r--r--@  1 mallow  staff  104448  2 25 02:24 elasticsearch-service-mgr.exe
+-rw-r--r--@  1 mallow  staff  103936  2 25 02:24 elasticsearch-service-x64.exe
+-rw-r--r--@  1 mallow  staff   80896  2 25 02:24 elasticsearch-service-x86.exe
+-rw-r--r--@  1 mallow  staff   11239  2 25 02:24 elasticsearch-service.bat
+-rwxr-xr-x@  1 mallow  staff     223  2 25 02:24 elasticsearch-systemd-pre-exec
+-rwxr-xr-x@  1 mallow  staff    2514  2 25 02:24 elasticsearch-translog
+-rw-r--r--@  1 mallow  staff    1435  2 25 02:24 elasticsearch-translog.bat
+-rw-r--r--@  1 mallow  staff    3341  2 25 02:24 elasticsearch.bat
+-rw-r--r--@  1 mallow  staff     828  2 25 02:24 elasticsearch.in.bat
+-rwxr-xr-x@  1 mallow  staff     404  2 25 02:24 elasticsearch.in.sh
+ishiiaoi-no-MacBook-Pro:~ mallow$
+
+ishiiaoi-no-MacBook-Pro:elasticsearch-5.2.2 mallow$ bin/elasticsearch
+[2017-03-05T15:49:00,854][INFO ][o.e.n.Node               ] [] initializing ...
+[2017-03-05T15:49:01,004][INFO ][o.e.e.NodeEnvironment    ] [asgUjsK] using [1] data paths, mounts [[/ (/dev/disk1)]], net usable_space [123.8gb], net total_space [232.6gb], spins? [unknown], types [hfs]
+[2017-03-05T15:49:01,005][INFO ][o.e.e.NodeEnvironment    ] [asgUjsK] heap size [1.9gb], compressed ordinary object pointers [true]
+[2017-03-05T15:49:01,006][INFO ][o.e.n.Node               ] node name [asgUjsK] derived from node ID [asgUjsKwQg2H9BLGdc3J5A]; set [node.name] to override
+[2017-03-05T15:49:01,011][INFO ][o.e.n.Node               ] version[5.2.2], pid[1521], build[f9d9b74/2017-02-24T17:26:45.835Z], OS[Mac OS X/10.12.2/x86_64], JVM[Oracle Corporation/Java HotSpot(TM) 64-Bit Server VM/1.8.0_45/25.45-b02]
+[2017-03-05T15:49:04,176][INFO ][o.e.p.PluginsService     ] [asgUjsK] loaded module [aggs-matrix-stats]
+[2017-03-05T15:49:04,177][INFO ][o.e.p.PluginsService     ] [asgUjsK] loaded module [ingest-common]
+[2017-03-05T15:49:04,177][INFO ][o.e.p.PluginsService     ] [asgUjsK] loaded module [lang-expression]
+[2017-03-05T15:49:04,177][INFO ][o.e.p.PluginsService     ] [asgUjsK] loaded module [lang-groovy]
+[2017-03-05T15:49:04,177][INFO ][o.e.p.PluginsService     ] [asgUjsK] loaded module [lang-mustache]
+[2017-03-05T15:49:04,177][INFO ][o.e.p.PluginsService     ] [asgUjsK] loaded module [lang-painless]
+[2017-03-05T15:49:04,177][INFO ][o.e.p.PluginsService     ] [asgUjsK] loaded module [percolator]
+[2017-03-05T15:49:04,177][INFO ][o.e.p.PluginsService     ] [asgUjsK] loaded module [reindex]
+[2017-03-05T15:49:04,178][INFO ][o.e.p.PluginsService     ] [asgUjsK] loaded module [transport-netty3]
+[2017-03-05T15:49:04,178][INFO ][o.e.p.PluginsService     ] [asgUjsK] loaded module [transport-netty4]
+[2017-03-05T15:49:04,178][INFO ][o.e.p.PluginsService     ] [asgUjsK] no plugins loaded
+[2017-03-05T15:49:08,320][INFO ][o.e.n.Node               ] initialized
+[2017-03-05T15:49:08,320][INFO ][o.e.n.Node               ] [asgUjsK] starting ...
+[2017-03-05T15:49:08,528][INFO ][o.e.t.TransportService   ] [asgUjsK] publish_address {127.0.0.1:9300}, bound_addresses {[fe80::1]:9300}, {[::1]:9300}, {127.0.0.1:9300}
+[2017-03-05T15:49:11,619][INFO ][o.e.c.s.ClusterService   ] [asgUjsK] new_master {asgUjsK}{asgUjsKwQg2H9BLGdc3J5A}{r2ufo0xMTqSnm-4w0Huq9w}{127.0.0.1}{127.0.0.1:9300}, reason: zen-disco-elected-as-master ([0] nodes joined)
+[2017-03-05T15:49:11,643][INFO ][o.e.h.HttpServer         ] [asgUjsK] publish_address {127.0.0.1:9200}, bound_addresses {[fe80::1]:9200}, {[::1]:9200}, {127.0.0.1:9200}
+[2017-03-05T15:49:11,643][INFO ][o.e.n.Node               ] [asgUjsK] started
+[2017-03-05T15:49:11,653][INFO ][o.e.g.GatewayService     ] [asgUjsK] recovered [0] indices into cluster_state
 
 5. 動作確認
 
 　ElasticSearuへクエリを投げ、返り値があるか確認します。
+返り値が帰ってくれば、正常にインストールできています。
 
-#@# コードを入れる
+# elasticsearchの稼動確認
+
+ishiiaoi-no-MacBook-Pro:~ mallow$ curl http://localhost:9200/
+{
+  "name" : "asgUjsK",
+  "cluster_name" : "elasticsearch",
+  "cluster_uuid" : "aK9PZbz4SCSbg3Bi_j_R_g",
+  "version" : {
+    "number" : "5.2.2",
+    "build_hash" : "f9d9b74",
+    "build_date" : "2017-02-24T17:26:45.835Z",
+    "build_snapshot" : false,
+    "lucene_version" : "6.4.1"
+  },
+  "tagline" : "You Know, for Search"
+}
 
 もしくはGoogle Chrome上でURLにアクセスし、同じような返り値があればOKです。
 
-#@# 画面キャプチャを入れる
-
-返り値が帰ってくれば、正常にインストールできています。
+/Usersmallow/review/text/text/images/localhost_9200.png
 
 ** Logstashのインストール
 
@@ -304,21 +430,84 @@ ElasticSearhと同様です。
 
 　Elasticの公式サイトにアクセスし、zipファイルをダウンロードします。
 
-#@# サイトのキャプチャを入れる
+/Usersmallow/review/text/text/images/logstash_download.png
 
 2. zipファイルの解凍
 
 　ElasticSearhをインストールする際に作成したディレクトリに、ダウンロードしたzipファイルを解凍します。
 ディレクトリ構成は一例です。
 
-#@# コードを入れる
+unzip logstash-5.2.2
+
+ishiiaoi-no-MacBook-Pro:ELK_Stack mallow$ ls -al
+total 0
+drwxr-xr-x   4 mallow  staff   136  3  5 16:13 .
+drwxr-xr-x+ 46 mallow  staff  1564  3  5 15:31 ..
+drwxr-xr-x@ 12 mallow  staff   408  3  5 15:49 elasticsearch-5.2.2
+drwxr-xr-x@ 17 mallow  staff   578  3  5 16:12 logstash-5.2.2
+
+ishiiaoi-no-MacBook-Pro:ELK_Stack mallow$ ls -al logstash-5.2.2/
+total 360
+drwxr-xr-x@ 17 mallow  staff     578  3  5 16:12 .
+drwxr-xr-x   4 mallow  staff     136  3  5 16:13 ..
+-rw-r--r--@  1 mallow  staff  111569  2 25 02:41 CHANGELOG.md
+-rw-r--r--@  1 mallow  staff    2249  2 25 02:41 CONTRIBUTORS
+-rw-r--r--@  1 mallow  staff    3864  2 25 02:46 Gemfile
+-rw-r--r--@  1 mallow  staff   21251  2 25 02:41 Gemfile.jruby-1.9.lock
+-rw-r--r--@  1 mallow  staff     589  2 25 02:41 LICENSE
+-rw-r--r--@  1 mallow  staff   29292  2 25 02:46 NOTICE.TXT
+drwxr-xr-x@ 10 mallow  staff     340  3  5 16:12 bin
+drwxr-xr-x@  6 mallow  staff     204  3  5 16:12 config
+drwxr-xr-x@  2 mallow  staff      68  2 25 02:41 data
+drwxr-xr-x@  5 mallow  staff     170  3  5 16:12 lib
+drwxr-xr-x@  6 mallow  staff     204  3  5 16:12 logstash-core
+drwxr-xr-x@  5 mallow  staff     170  3  5 16:12 logstash-core-event-java
+drwxr-xr-x@  4 mallow  staff     136  3  5 16:12 logstash-core-plugin-api
+drwxr-xr-x@  5 mallow  staff     170  3  5 16:12 logstash-core-queue-jruby
+drwxr-xr-x@  4 mallow  staff     136  3  5 16:12 vendor
 
 4. 動作確認用のlogstash.conf作成
 
 　この後の章で詳しく述べますが、Logstashはlogstash.confを読み込むことで
 ファイルの取り込み元などを指定します。まずは動作確認用に次のコードをconfファイルへ記述します。
 
-#@# コードを入れる（logstash.confを書くところ全部入れる）
+# logstash.confの作成
+ishiiaoi-no-MacBook-Pro:logstash-5.2.2 mallow$ touch logstash.conf
+# logstash.confの編集
+ishiiaoi-no-MacBook-Pro:logstash-5.2.2 mallow$ vi logstash.conf
+
+# 標準入力を受け付ける
+input {
+  stdin { }
+}
+
+# 標準出力を行う
+output {
+  stdout { codec => rubydebug }
+}
+
+ishiiaoi-no-MacBook-Pro:logstash-5.2.2 mallow$ ls -al
+total 368
+drwxr-xr-x@ 18 mallow  staff     612  3  5 16:19 .
+drwxr-xr-x   4 mallow  staff     136  3  5 16:13 ..
+-rw-r--r--@  1 mallow  staff  111569  2 25 02:41 CHANGELOG.md
+-rw-r--r--@  1 mallow  staff    2249  2 25 02:41 CONTRIBUTORS
+-rw-r--r--@  1 mallow  staff    3864  2 25 02:46 Gemfile
+-rw-r--r--@  1 mallow  staff   21251  2 25 02:41 Gemfile.jruby-1.9.lock
+-rw-r--r--@  1 mallow  staff     589  2 25 02:41 LICENSE
+-rw-r--r--@  1 mallow  staff   29292  2 25 02:46 NOTICE.TXT
+drwxr-xr-x@ 10 mallow  staff     340  3  5 16:12 bin
+drwxr-xr-x@  6 mallow  staff     204  3  5 16:12 config
+drwxr-xr-x@  2 mallow  staff      68  2 25 02:41 data
+drwxr-xr-x@  5 mallow  staff     170  3  5 16:12 lib
+drwxr-xr-x@  6 mallow  staff     204  3  5 16:12 logstash-core
+drwxr-xr-x@  5 mallow  staff     170  3  5 16:12 logstash-core-event-java
+drwxr-xr-x@  4 mallow  staff     136  3  5 16:12 logstash-core-plugin-api
+drwxr-xr-x@  5 mallow  staff     170  3  5 16:12 logstash-core-queue-jruby
+-rw-r--r--   1 mallow  staff      68  3  5 16:19 logstash.conf
+drwxr-xr-x@  4 mallow  staff     136  3  5 16:12 vendor
+ishiiaoi-no-MacBook-Pro:logstash-5.2.2 mallow$
+
 
 5. 動作確認
 
@@ -328,7 +517,24 @@ logstash.confにタイプミスがない場合、「Logstash startup completed�
 コマンドプロンプトに好きな文字列を打ち込んでみましょう。
 文字列がそのまま返り値として出力された場合、正しくセットアップできています。
 
-#@# コードを入れる（/bin/logstash -f logstash.conf)
+ishiiaoi-no-MacBook-Pro:logstash-5.2.2 mallow$ /bin/logstash -f logstash.conf
+-bash: /bin/logstash: No such file or directory
+ishiiaoi-no-MacBook-Pro:logstash-5.2.2 mallow$ bin/logstash -f logstash.conf
+Sending Logstash's logs to /Users/mallow/ELK_Stack/logstash-5.2.2/logs which is now configured via log4j2.properties
+[2017-03-05T16:22:40,422][INFO ][logstash.setting.writabledirectory] Creating directory {:setting=>"path.queue", :path=>"/Users/mallow/ELK_Stack/logstash-5.2.2/data/queue"}
+[2017-03-05T16:22:40,439][INFO ][logstash.agent           ] No persistent UUID file found. Generating new UUID {:uuid=>"ee122f82-747e-4d36-b851-322979edf3b6", :path=>"/Users/mallow/ELK_Stack/logstash-5.2.2/data/uuid"}
+[2017-03-05T16:22:40,817][INFO ][logstash.pipeline        ] Starting pipeline {"id"=>"main", "pipeline.workers"=>4, "pipeline.batch.size"=>125, "pipeline.batch.delay"=>5, "pipeline.max_inflight"=>500}
+[2017-03-05T16:22:40,858][INFO ][logstash.pipeline        ] Pipeline main started
+The stdin plugin is now waiting for input:
+
+# 標準入力で"hello world"を入力
+hello world
+{
+    "@timestamp" => 2017-03-05T07:22:40.899Z,
+      "@version" => "1",
+          "host" => "ishiiaoi-no-MacBook-Pro.local",
+       "message" => "hello world"
+}
 
 ** Kibanaのインストール
 
