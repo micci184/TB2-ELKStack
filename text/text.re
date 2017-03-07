@@ -718,31 +718,33 @@ Consumer Secret (API Secret):こちらも認証に必要です。他の人には
 **** Twitterの検索キーワードを指定
 　今回は「イチゴメロンパン」という文言が含まれるツイート数を数えたいので、"keyword"のオプション設定を利用します。
 
-#@# コンフィグをかく（該当部分だけ）
-
-検索条件の指定方法はTwitter APIの記法を流用しています。詳細は公式サイトを閲覧すると良いでしょう。
-
-この状態でLogstashを起動すると、このようにデータが取得できます。
-#@# 返り値をかく
-今度は「イチゴメロンパン」の情報だけ取得できました。
-
-#@# 必要に応じて詳細を追記。
+input{
+  twitter{
+    consumer_key => "Twitter APIのconsumer_key"
+    consumer_secret => "Twitter APIのconsumer_secret"
+    oauth_token => "Twitter APIのAccess Token"
+    oauth_token_secret => "Twitter APIのAccess Token Secret"
+    keywords => ["イチゴメロンパン"]
+    full_tweet => "true"
+  }
+}
 
 *** outputプラグインを書いてみよう
-　欲しい情報を集めることができたので、今度はログをElasticSearhに送ってみましょう。
+　欲しい情報を集めた後は、ElasticSearhに送りたいですよね。
 図X.Xで囲った部分となります。
 
 /Users/mallow/review/text/text/images/logstash_config_output.png
-
 
 **** ログの送付先を指定する
 　今回はElasticSearhにログを送付するため、ElasticSearhプラグインを利用します。
 動作確認のため標準出力を可能にするstdoutプラグインも利用しましょう。
 output内に複数のプラグインを同時記述することができます。括弧の閉じ忘れには気をつけてください。
 
-#@# コードを記載する。
-
-#@# 必要に応じて内容を追記する。
+output {
+    elasticsearch{
+    hosts => "http://localhost:9200/"
+  }
+}
 
 *** 動作確認
 
@@ -754,11 +756,7 @@ output内に複数のプラグインを同時記述することができます�
 大丈夫かどうか、動作確認してみましょう。
 ElasticSearh→Logstash→Kibanaの順に起動します。
 
-#@# コードをみる
-
 　サービスが開始されたら、Kibanaにアクセスします。
-
-#@# 画面キャプチャを入れる
 
 　「さっきと何も変わんないようー、エラーも出てないよ？」
 
@@ -766,7 +764,7 @@ ElasticSearh→Logstash→Kibanaの順に起動します。
 詳細はKibanaの章で解説しますので、今はとにかくKibanaで情報が見えるようにしましょう。
 図X.Xの画面キャプチャ通りに操作してください。
 
-#@# 画面キャプチャ（手順つき）を入れる
+/Usersmallow/review/text/text/images/Kibana_create_index.png
 
 　「見えたあ！」
 
