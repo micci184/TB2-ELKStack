@@ -716,7 +716,8 @@ Consumer Secret (API Secret):こちらも認証に必要です。他の人には
 どうやら「イチゴメロンパン」以外のつぶやきも取れてしまっているようですね。
 
 **** Twitterの検索キーワードを指定
-　今回は「イチゴメロンパン」という文言が含まれるツイート数を数えたいので、"keyword"のオプション設定を利用します。
+　keywordsオプションを利用して検索したい単語、条件を指定できます。"[]"で囲わないと
+構文エラーとなってしまいます。
 
 input{
   twitter{
@@ -724,10 +725,15 @@ input{
     consumer_secret => "Twitter APIのconsumer_secret"
     oauth_token => "Twitter APIのAccess Token"
     oauth_token_secret => "Twitter APIのAccess Token Secret"
-    keywords => ["イチゴメロンパン"]
+    keywords => ["検索したいもの"]
     full_tweet => "true"
   }
 }
+
+　複数検索したいものを指定する場合、コロンで繋げて記述します。
+
+# イチゴメロンパン、logstash、elasticsearch、kibana、Elasticonを検索したい場合
+keywords => ["イチゴメロンパン","logstash","elasticsearch","kibana","Elasticon"]
 
 *** outputプラグインを書いてみよう
 　欲しい情報を集めた後は、ElasticSearhに送りたいですよね。
@@ -748,9 +754,7 @@ output {
 
 *** 動作確認
 
-　「filterプラグインなんて書く必要はあるのかなあ？」
-
-#@# 挿絵を入れる
+　「filterプラグインなんて書く必要はあるのかなあ？ログの取り込みができればいいと思うけど…。」
 
 　もふもふちゃん、余裕をかましているようです。本当に大丈夫なのでしょうか。
 大丈夫かどうか、動作確認してみましょう。
@@ -758,27 +762,27 @@ ElasticSearh→Logstash→Kibanaの順に起動します。
 
 　サービスが開始されたら、Kibanaにアクセスします。
 
-　「さっきと何も変わんないようー、エラーも出てないよ？」
+　「さっきと何も変わんないよ！」
 
 　おっと、Kibanaでログを閲覧するためには、ElasticSearhとKibanaの情報を紐付ける必要があります。
 詳細はKibanaの章で解説しますので、今はとにかくKibanaで情報が見えるようにしましょう。
 図X.Xの画面キャプチャ通りに操作してください。
 
-/Usersmallow/review/text/text/images/Kibana_create_index.png
+/Usersmallow/review/text/text/images/Kibana_create_index01.png
 
-　「見えたあ！」
+　「見えた！」
 
 　お、もふもふちゃんはうまく情報の紐付けができたようですね。紐付けができるとKibanaはこのような画面になっているはずです。
 
-#@# キャプチャを差し込む
+/Usersmallow/review/text/text/images/Kibana_create_index02.png
 
-　「あら？なんかログがただ並んでいるだけのように見えるなあ。なんでえー？？」
+　「あら？なんかログがただ並んでいるだけのように見えるなあ。なんでー？？」
 
 　…やっぱり大丈夫じゃなかったみたいですね。filterプラグインはログを加工するだけでなく
 データを綺麗に分割する役割も持ち合わせています。今はただ情報を取得して送付しているだけなので
 取り込んだものがそのままデータ連携されてしまったのですね。
 
-　「やっぱりサボっちゃダメなのかあー」
+　「やっぱりサボっちゃダメなのかー。」
 
 　そうですね。でもfilter部分の頑張り度とKibana画面の使いやすさ度は比例しますので
 ここはもう一踏ん張りしてみましょう。
@@ -795,8 +799,6 @@ fieldとは、データベースでのカラムに相当します。textはカ�
 カラムの中にデータを入れるのと同じように、field内にtextを保持します。
 このfieldの集まりを「index」といいます。
 
-#@# 解説の図を入れる
-
 　つまり、ElasticSearh内のfieldごとにデータが入るようにログを取り込まないと
 Kibanaでは1つのログの塊として認識されてしまい、データの区分けができないのです。
 これではせっかくのKibanaの便利さも半減されてしまいます。
@@ -811,7 +813,27 @@ kvフィルタを利用する前は、このようにログが出力されます
 
 　では、kvフィルタを追加してみましょう。
 
-#@# kvフィルタをコンフィグに追加
+input{
+  twitter{
+    consumer_key => "Twitter APIのconsumer_key"
+    consumer_secret => "Twitter APIのconsumer_secret"
+    oauth_token => "Twitter APIのAccess Token"
+    oauth_token_secret => "Twitter APIのAccess Token Secret"
+    keywords => ["検索したいもの"]
+    full_tweet => "true"
+  }
+}
+
+filter{
+  kv{
+  }
+}
+
+output {
+    elasticsearch{
+    hosts => "http://localhost:9200/"
+  }
+}
 
 　この状態でLogstashサービスを起動すると、このように出力されます。
 
