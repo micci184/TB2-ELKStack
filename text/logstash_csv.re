@@ -96,7 +96,7 @@ input{
 }
 //}
 
-=== pathの記載（input：path）
+=== pathの記載
 　各プラグインには必須項目があります。@<tt>{file}プラグインでは@<b>{path}が
 必須項目にあたります。@<b>{path => ファイルパス}のように指定します。
 パスの指定には正規表現を利用できますが、フルパスで記載する必要があります。
@@ -109,7 +109,7 @@ input{
 }
 //}
 
-=== 取り込んだログを標準出力する（output：stdout）
+=== 取り込んだログを標準出力する
 　outputに@<b>{stdout}を指定すると、コンソール上に標準出力することができます。
 まずはファイルが取り込みできるかテストしてみましょう。
 
@@ -136,7 +136,7 @@ Sending Logstash's logs to /Users/mallow/ELK_Stack/logstash-5.2.2/logs which is 
 [2017-03-11T20:31:56,513][INFO ][logstash.agent           ] Successfully started Logstash API endpoint {:port=>9600}
 //}
 
-=== ファイルの読み込み位置を指定する（input：start_position）
+=== ファイルの読み込み位置を指定する
 　実際にやってみるとわかりますが、このままではLogstashの標準出力には何も表示されません。
 デフォルトの設定では、@<b>{起動した後に更新された分だけファイルを読み取る}設定になっているためです。
 
@@ -162,13 +162,13 @@ input{
 }
 //}
 
-=== ファイルにタグをつけて分類する（input：tags）
+=== ファイルにタグをつけて分類する
 　読み込んだデータを分類したい場合、自分でタグ（@<b>{tags}）をつけることができます。
 @<tt>{tags}を利用すると、if文などを用いて取り込んだデータに対する固定の処理を指定することができます。
 また、ログ情報に@<tt>{tags}が付与されるため、データの種類ごとにKibanaのグラフを作成することも可能です。
 @<code>{tags => "好きな名前"}で指定します。
 
-=== 指定したファイルの種類は除外する（input：exclude）
+=== 指定したファイルの種類は除外する
 　zipファイルなど、取り込み対象から除外したいものがある場合、@<b>{exclude}を利用することで
 指定したものをLogstashの取り込み対象から外すことができます。こちらはフルパス指定は不要です。
 正規表現を用いて指定することができます。
@@ -224,7 +224,7 @@ output{
       "@timestamp" => 2017-03-11T13:07:15.113Z,
         "@version" => "1",
             "host" => "XX.local",
-         "message" => "\"730751058306162689\",\"160512 222643\",\"クールビューティーだけどさ #nhk_life\"",
+         "message" => "\"730751058306162689\",\"160512 222643\",\"いちごメロンパン食べたい #precure\"",
             "tags" => [
           [0] "CSV"
       ]
@@ -232,13 +232,19 @@ output{
 
 //}
 
+== outputプラグイン
+　Kibana上でグラフを作成するためにはElasticSearhにデータが入っている必要があります。
+このままでは標準出力に取り込んだデータが出てくるだけなので、outputプラグインを用いて
+データの送り先を指定します。
 
-== ログの送付先を指定する
-　今回はElasticSearhにログを送付するため、ElasticSearhプラグインを利用します。
-動作確認のため標準出力を可能にするstdoutプラグインも利用しましょう。
-output内に複数のプラグインを同時記述することができます。括弧の閉じ忘れには気をつけてください。
+=== ElasticSearhにデータを送る
+　ElasticSearhにログを送付するには@<tt>{elasticsearch}プラグインを利用します。
+必須項目はありませんが、ElasticSearhのホスト名を指定しないと@<href>{127.0.0.1}にアクセスします。
 
-//cmd{
+　hostsを明示s的に設定するためには@<b>{hosts}を利用します。
+@<code>{hosts => "ElasticSearhのアクセス用URL"}で指定します。
+
+//emlist[elasticsearchプラグインの指定]{
 output {
     elasticsearch{
     hosts => "http://localhost:9200/"
@@ -246,134 +252,126 @@ output {
 }
 //}
 
-=== 動作確認
-
-//lead{
-　「filterプラグインなんて書く必要はあるのかなあ？ログの取り込みができればいいと思うけど…。」
-//}
-
-　もふもふちゃん、余裕をかましているようです。本当に大丈夫なのでしょうか。
-大丈夫かどうか、動作確認してみましょう。
-ElasticSearh→Logstash→Kibanaの順に起動します。
-
-　サービスが開始されたら、Kibanaにアクセスします。
-
-//lead{
-　「さっきと何も変わんないよ！」
-//}
-
-　おっと、Kibanaでログを閲覧するためには、ElasticSearhとKibanaの情報を紐付ける必要があります。
-詳細はKibanaの章で解説しますので、今はとにかくKibanaで情報が見えるようにしましょう。
-まずは画面の1番下にある@<tt>{"Create index"}を押してください。
-
-#@#//image[Kibana_create_index01][Indexの紐付け]{
-#@#/Usersmallow/review/text/text/images/Kibana_create_index01.png
-#@#//}
-
-　これで情報の紐付けができました。紐付けができるとKibanaはこのような画面になっているはずです。
-
-#@#//image[Kibana_create_index02][Indexの紐付け後]{
-#@#/Usersmallow/review/text/text/images/Kibana_create_index02.png
-#@#//}
-
-//lead{
-　「あら？なんかログがただ並んでいるだけのように見えるなあ。なんでー？？」
-//}
-
-　…やっぱり大丈夫じゃなかったみたいですね。filterプラグインはログを加工するだけでなく
-データを綺麗に分割する役割も持ち合わせています。今はただ情報を取得して送付しているだけなので
-取り込んだものがそのままデータ連携されてしまったのですね。
-
-//lead{
-　「やっぱりサボっちゃダメなのかー。」
-//}
-
-　そうですね。でもfilter部分の頑張り度とKibana画面の使いやすさ度は比例しますので
-ここはもう一踏ん張りしてみましょう。
-
-=== filterプラグインを書いてみよう
-　今から編集する部分は、@<tt>{logstash.conf}のメインとなる部分です。
-
-== fieldとtextにデータをうまく分ける（ElasticSearhのデータの持ち方を説明）
-　先ほどKibanaを閲覧したとき、データがうまく分かれていなかったと思います。
-これはElasticSearhのデータの持ち方が@<tt>{field}に対する@<tt>{text}という構造になっているためです。
+=== 送付先indexの指定
+　ElasticSearhはデータの持ち方が@<b>{field}に対する@<b>{text}という構造になっています。
 fieldとは、データベースでのカラムに相当します。textはカラムの中に入っている実データです。
-カラムの中にデータを入れるのと同じように、field内にtextを保持します。
+カラムの中にデータを入れるのと同じように、field内に実際のデータ（@<tt>{text})を保持します。
 このfieldの集まりを@<tt>{index}といいます。
 
-　つまり、ElasticSearh内のfieldごとにデータが入るようにログを取り込まないと
-Kibanaでは1つのログの塊として認識されてしまい、データの区分けができないのです。
-これではせっかくのKibanaの便利さも半減されてしまいます。
-では、どのようにログを分割すれば良いのでしょう？
+　デフォルトのindex名は@<tt>{"logstash-%{+YYYY.MM.dd\}"}です。
+@<tt>{elasticsearch}プラグインの@<tt>{index}を用いることでindex名を変更することができます。
 
-== kvフィルタ：ログを分割する
-　kvフィルタを使うことで、ログを分割することができます。
-どのように分割されるのか、具体例を用いながらみていきましょう。
-kvフィルタを利用する前は、このようにログが出力されます。
+//emlist[index名の変更]{
+index => "%{index名}-%{+YYYY.MM.dd}"
+//}
 
-#@# kvフィルタ前のログ
+　今回はindex名は変更せず、デフォルトの設定のまま利用することにします。
+ただElasticSearhに大量のデータを集める場合、indexを明示的に指定することで
+Kibanaを用いてデータを取り出す速度を上げることができます。
 
-　では、kvフィルタを追加してみましょう。
+　これで、outputプラグインも書くことができました。
+他のプラグインを利用すると、データをファイル出力することも可能です。
+利用できるプラグインは公式サイト@<href>{https://www.elastic.co/guide/en/logstash/current/output-plugins.html}に
+一覧があります。
 
-//cmd{
+//emlist[outputを記載したlogstash.conf]{
 input{
-  twitter{
-    consumer_key => "Twitter APIのconsumer_key"
-    consumer_secret => "Twitter APIのconsumer_secret"
-    oauth_token => "Twitter APIのAccess Token"
-    oauth_token_secret => "Twitter APIのAccess Token Secret"
-    keywords => ["検索したいもの"]
-    full_tweet => "true"
+  file{
+    exclude => "*.zip"
+    path => "/Users/mallow/ELK_Stack/logs/**.csv"
+    start_position => "beginning"
+    tags => "CSV"
+  }
+}
+
+output{
+  stdout{
+    codec => rubydebug
+  }
+  elasticsearch{
+    hosts => "http://localhost:9200/"
+  }
+}
+//}
+
+=== filterプラグイン
+　今の状態だと、ログはこのように連携されます。@<tt>{=>}より左はfield部分、右は実際のデータです。
+//emlist[標準出力で出ているログ]{
+{
+          "path" => "/Users/mallow/ELK_Stack/logs/froakie0021170311.csv",
+    "@timestamp" => 2017-03-11T13:07:15.113Z,
+      "@version" => "1",
+          "host" => "XX.local",
+       "message" => "\"730751058306162689\",\"160512 222643\",\"いちごメロンパン食べたい #precure\"",
+          "tags" => [[0] "CSV"]
+}
+//}
+
+　このままKibanaで可視化するのは抵抗があります。というのも、field名@@<tt>{host}では
+自分のPCの名前が丸見えになっていますし、@@<tt>{path}でファイルのフルパスが記載してあるのを
+そのまま公開するのも気が引けます。
+
+　さらに、@<tt>{@timestamp}を見る限り、時間が明らかに実際のログの時間とずれています。
+もっというと@<tt>{message}の中のログは1つの情報ごとに分割したいですよね。
+@<b>{filter}を使ってログの中身を整形しましょう。
+プラグインの一覧は@<href>{https://www.elastic.co/guide/en/logstash/current/filter-plugins.html}に
+情報がまとまっています。
+
+== CSV形式のログを分割する
+　CSV形式のログを分割するためには@<b>{csv}プラグインを利用します。
+必須項目はありません。指定は@<code>{　csv {\} }というように行います。
+
+//emlist[filterにcsvを指定したlogstash.conf]{
+input{
+  file{
+    exclude => "*.zip"
+    path => "/Users/mallow/ELK_Stack/logs/**.csv"
+    start_position => "beginning"
+    tags => "CSV"
   }
 }
 
 filter{
-  kv{
+  csv{
+
   }
 }
 
-output {
-    elasticsearch{
+output{
+  stdout{
+    codec => rubydebug
+  }
+  elasticsearch{
     hosts => "http://localhost:9200/"
   }
 }
 //}
 
-　この状態でLogstashサービスを起動すると、このように出力されます。
-
-#@# kvフィルタ後のログ
-
-　このように、kvフィルタを追加するとログの区切りでログの種類：実際の情報といった形で
-ログが分割できるのです。例えば「aaa：bbb」というログがあった場合、
-「aaa」の部分はfield項目扱いに、「bbb」の部分はtext項目扱いとなります。
-実際のログも区切り前がログの種類、区切り跡が実際の情報になりますからね。
-
-== removeフィルタ：いらない情報は捨てる
-
-//lead{
-　「うーん、ログにはTwitterアカウント名が含まれているけれど、ちょっとこれは個人情報っぽいから
-あまりログ情報としては持っておきたくないなあ」
+　実際にログを出力すると、column1などと、カラムごとにfieldも分割されたことがわかります。
+//emlist[csvフィルタを指定してLogstashを起動した場合]{
+{
+       "column1" => "700941673379987456",
+          "path" => "/Users/mallow/ELK_Stack/logs/froakie0021170311.csv",
+    "@timestamp" => 2017-03-11T14:20:08.119Z,
+       "column3" => "test",
+       "column2" => "160220 161452",
+      "@version" => "1",
+          "host" => "ishiiaoi-no-MacBook-Pro.local",
+       "message" => "\"700941673379987456\",\"160220 161452\",\"test\"",
+          "tags" => [
+        [0] "CSV"
+    ]
+}
 //}
 
-　確かに、いらない情報や取得してはいけない情報は捨ててしまいたいですよね。
-そんなときはremoveフィルタを使用することで、指定した条件に一致するログを「なかったこと」にできます。
+== 
 
-#@# コードを入れる
+== ログが出力された時刻を編集する
+　@@<tt>{@timestamp}の時刻が実際のログとずれる理由ですが、Logstashの仕様に原因があります。
+Logstashは@@<b>{データを取り込んだ時間}を@@<tt>{@timestamp}として付与します。
+これにより、データの持っている時刻と@@<tt>{@timestamp}の時間がずれているように見えたのです。
 
-　条件指定はif文を用いて行います。if文のあとにfield名を指定し、
-イコールの後に削除したいログの具体的な名称を記載します。
-条件指定には正規表現を用いることができるので「○○に当てはまるものは全て」といった
-指定も可能です。前に記載した@<tt>{logstash.conf}を用いて、dropフィルタを使用する前と後を比較してみましょう。
-
-#@# dropフィルタを利用する前
-
-#@# dropフィルタを利用した後
-
-本当になくなってしまいましたね…。
-
-== timestampフィルタ：ログが出力された時刻を編集する
-
-#@# 忘れたので調べる
+　これを解消するためには
 
 === 最後に動作確認
 
