@@ -96,7 +96,7 @@ input{
 }
 //}
 
-=== pathの記載（input）
+=== pathの記載（input：path）
 　各プラグインには必須項目があります。@<tt>{file}プラグインでは@<b>{path}が
 必須項目にあたります。@<b>{path => ファイルパス}のように指定します。
 パスの指定には正規表現を利用できますが、フルパスで記載する必要があります。
@@ -109,7 +109,7 @@ input{
 }
 //}
 
-=== 取り込んだログを標準出力する（output）
+=== 取り込んだログを標準出力する（output：stdout）
 　outputに@<b>{stdout}を指定すると、コンソール上に標準出力することができます。
 まずはファイルが取り込みできるかテストしてみましょう。
 
@@ -136,11 +136,101 @@ Sending Logstash's logs to /Users/mallow/ELK_Stack/logstash-5.2.2/logs which is 
 [2017-03-11T20:31:56,513][INFO ][logstash.agent           ] Successfully started Logstash API endpoint {:port=>9600}
 //}
 
-== ファイルの読み込み位置を指定する（input）
+=== ファイルの読み込み位置を指定する（input：start_position）
 　実際にやってみるとわかりますが、このままではLogstashの標準出力には何も表示されません。
 デフォルトの設定では、@<b>{起動した後に更新された分だけファイルを読み取る}設定になっているためです。
 
-　どこまでファイルを読み取ったか
+　どこまでファイルを読み取ったかは、Logstashが自動で@<b>{sincedb}というファイルに記録しています。
+設定を変更することで@<tt>{sincedb}ファイルに記録されている履歴の次から情報を取得することができます。
+ファイルの読み込み位置は@<b>{start_position}を用いて設定します。
+
+//emlist[start_positionの指定]{
+# Logsatsh起動後に追加されたログのみ取り込む場合
+start_position => "end"
+# Logsatshが停止後に追加されたログも取り込む場合
+start_position => "end"
+//}
+
+　@<tt>{logstash.conf}上で指定する場合、次のように記載します。
+
+//emlist[start_positionを指定したlogsatsh.conf]{
+input{
+  file{
+    path => "/フォルダのフルパス/logs/**.csv"
+    start_position => "beginning"
+  }
+}
+//}
+
+=== ファイルにタグをつけて分類する（input：tags）
+　読み込んだデータを分類したい場合、自分でタグ（@<b>{tags}）をつけることができます。
+@<tt>{tags}を利用すると、if文などを用いて取り込んだデータに対する固定の処理を指定することができます。
+また、ログ情報に@<tt>{tags}が付与されるため、データの種類ごとにKibanaのグラフを作成することも可能です。
+@<code>{tags => "好きな名前"}で指定します。
+
+=== 指定したファイルの種類は除外する（input：exclude）
+　zipファイルなど、取り込み対象から除外したいものがある場合、@<b>{exclude}を利用することで
+指定したものをLogstashの取り込み対象から外すことができます。こちらはフルパス指定は不要です。
+正規表現を用いて指定することができます。
+
+//emlist[excludeの指定]{
+# zipファイルを取り込みから除外したい場合
+exclude => "*.zip"
+//}
+
+　今までの設定を全て追加した場合、@<tt>{logstash.conf}はこのようになります。
+
+//emlist[inputプラグインを追加したlogstash.conf]{
+input{
+  file{
+    exclude => "*.zip"
+    path => "/Users/mallow/ELK_Stack/logs/**.csv"
+    start_position => "beginning"
+    tags => "CSV"
+  }
+}
+
+output{
+  stdout{ codec => rubydebug }
+}
+//}
+
+　この状態でLogstashを起動すると、CSVのデータが標準出力されます。
+//cmd{
+  $ logstash-5.2.2/bin/logstash -f logstash-5.2.2/logstash.conf
+  Sending Logstash's logs to /Users/mallow/ELK_Stack/logstash-5.2.2/logs which is now configured via log4j2.properties
+  [2017-03-11T20:31:56,188][INFO ][logstash.pipeline        ] Starting pipeline {"id"=>"main", "pipeline.workers"=>4, "pipeline.batch.size"=>125, "pipeline.batch.delay"=>5, "pipeline.max_inflight"=>500}
+  [2017-03-11T20:31:56,421][INFO ][logstash.pipeline        ] Pipeline main started
+  [2017-03-11T20:31:56,513][INFO ][logstash.agent           ] Successfully started Logstash API endpoint {:port=>9600}
+  ^C[2017-03-11T20:46:29,527][WARN ][logstash.runner          ] SIGINT received. Shutting down the agent.
+  [2017-03-11T20:46:29,537][WARN ][logstash.agent           ] stopping pipeline {:id=>"main"}
+  $ logstash-5.2.2/bin/logstash -f logstash-5.2.2/logstash.conf
+  Sending Logstash's logs to /Users/mallow/ELK_Stack/logstash-5.2.2/logs which is now configured via log4j2.properties
+  [2017-03-11T22:07:14,824][INFO ][logstash.pipeline        ] Starting pipeline {"id"=>"main", "pipeline.workers"=>4, "pipeline.batch.size"=>125, "pipeline.batch.delay"=>5, "pipeline.max_inflight"=>500}
+  [2017-03-11T22:07:15,039][INFO ][logstash.pipeline        ] Pipeline main started
+  [2017-03-11T22:07:15,194][INFO ][logstash.agent           ] Successfully started Logstash API endpoint {:port=>9600}
+  {
+            "path" => "/Users/mallow/ELK_Stack/logs/froakie0021170311.csv",
+      "@timestamp" => 2017-03-11T13:07:15.099Z,
+        "@version" => "1",
+            "host" => "XX.local",
+         "message" => "",
+            "tags" => [
+          [0] "CSV"
+      ]
+  }
+  {
+            "path" => "/Users/mallow/ELK_Stack/logs/froakie0021170311.csv",
+      "@timestamp" => 2017-03-11T13:07:15.113Z,
+        "@version" => "1",
+            "host" => "XX.local",
+         "message" => "\"730751058306162689\",\"160512 222643\",\"クールビューティーだけどさ #nhk_life\"",
+            "tags" => [
+          [0] "CSV"
+      ]
+  }
+
+//}
 
 
 == ログの送付先を指定する
