@@ -1,6 +1,6 @@
 = 環境構築（各ツールのインストール）
 
-////lead{
+//lead{
 「よーし、ELKがどんなものかだいたい理解できたから、インストールしてみよ！
 …あれ、なんかインストール方法もいっぱいあるみたい。どれを選べばいいのかなあ？」
 //}
@@ -114,7 +114,7 @@ $ unzip elasticsearch-5.2.2
 OSがWindowsの場合、@<tt>{elasticsearch.bat}を実行します。
 
 //cmd{
-$ mofumofu-no-MacBook-Pro:elasticsearch-5.2.2 mofumofu$ bin/elasticsearch
+$ elasticsearch-5.2.2 mofumofu$ bin/elasticsearch
 [2017-03-05T15:49:00,854][INFO ][o.e.n.Node               ] [] initializing ...
 [2017-03-05T15:49:01,004][INFO ][o.e.e.NodeEnvironment    ] [asgUjsK] using [1] data paths, mounts [[/ (/dev/disk1)]], net usable_space [123.8gb], net total_space [232.6gb], spins? [unknown], types [hfs]
 [2017-03-05T15:49:01,005][INFO ][o.e.e.NodeEnvironment    ] [asgUjsK] heap size [1.9gb], compressed ordinary object pointers [true]
@@ -145,7 +145,7 @@ $ mofumofu-no-MacBook-Pro:elasticsearch-5.2.2 mofumofu$ bin/elasticsearch
 　ElasticSearuへクエリを投げ、返り値があるか確認します。
 返り値が帰ってくれば、正常にインストールできています。
 
-////cmd{
+//cmd{
 # elasticsearchの稼動確認
 $ curl http://localhost:9200/
 {
@@ -235,13 +235,13 @@ unzip logstash-5.2.2
 
 //cmd{
 # logstash.confの作成
-mofumofu-no-MacBook-Pro:logstash-5.2.2 mofumofu$ touch logstash.conf
+logstash-5.2.2 mofumofu$ touch logstash.conf
 //}
 
 　次に、logstash.confを編集します。
 //cmd{
 # logstash.confの編集
-mofumofu-no-MacBook-Pro:logstash-5.2.2 mofumofu$ vi logstash.conf
+logstash-5.2.2 mofumofu$ vi logstash.conf
 
 # 下記の通り編集
 -----------------------------------------------------
@@ -264,9 +264,9 @@ OSがWindowsの場合、同階層に@<tt>{logstash.bat}が配置されている�
 文字列がそのまま返り値として出力された場合、正しくセットアップできています。
 
 //cmd{
-mofumofu-no-MacBook-Pro:logstash-5.2.2 mofumofu$ /bin/logstash -f logstash.conf
+logstash-5.2.2 mofumofu$ /bin/logstash -f logstash.conf
 -bash: /bin/logstash: No such file or directory
-mofumofu-no-MacBook-Pro:logstash-5.2.2 mofumofu$ bin/logstash -f logstash.conf
+logstash-5.2.2 mofumofu$ bin/logstash -f logstash.conf
 Sending Logstash's logs to /Users/mallow/ELK_Stack/logstash-5.2.2/logs which is now configured via log4j2.properties
 [2017-03-05T16:22:40,422][INFO ][logstash.setting.writabledirectory] Creating directory {:setting=>"path.queue", :path=>"/Users/mallow/ELK_Stack/logstash-5.2.2/data/queue"}
 [2017-03-05T16:22:40,439][INFO ][logstash.agent           ] No persistent UUID file found. Generating new UUID {:uuid=>"ee122f82-747e-4d36-b851-322979edf3b6", :path=>"/Users/mallow/ELK_Stack/logstash-5.2.2/data/uuid"}
@@ -330,7 +330,7 @@ elasticsearch.url: "http://localhost:9200"
 　/binフォルダ下にあるkibanaスクリプトから起動します。（Windowsはkibana.batから起動します。）
 
 //cmd{
-mofumofu-no-MacBook-Pro:kibana-5.2.2-darwin-x86_64 mofumofu$ bin/kibana
+kibana-5.2.2-darwin-x86_64 mofumofu$ bin/kibana
   log   [07:46:54.934] [info][status][plugin:kibana@5.2.2] Status changed from uninitialized to green - Ready
   log   [07:46:55.016] [info][status][plugin:elasticsearch@5.2.2] Status changed from uninitialized to yellow - Waiting for Elasticsearch
   log   [07:46:55.046] [info][status][plugin:console@5.2.2] Status changed from uninitialized to green - Ready
@@ -346,4 +346,4 @@ mofumofu-no-MacBook-Pro:kibana-5.2.2-darwin-x86_64 mofumofu$ bin/kibana
 
 //image[kibana_setup][Kibanaの画面]{
 /Usersmofumofu/review/text/text/images/kibana_setup.png
-}
+//}

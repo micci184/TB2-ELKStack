@@ -45,9 +45,9 @@ Vertical bar chart  棒グラフ
 === Area chart
 　データ件数の数だけ塗りつぶして表示されます。SFの映画とかによく出てきそうなグラフですね。
 
-//image[kibana_areaChart][Area chart]{
-  キャプチャを貼る
-//}
+#@#//image[kibana_areaChart][Area chart]{
+#@#  キャプチャを貼る
+#@#//}
 
 === Data table
 　fieldの中にあるカラムが何件あるか、数を表示することができます。
@@ -55,47 +55,47 @@ Vertical bar chart  棒グラフ
 データはCSV形式でダウンロードすることができます。ただし、文字コードはUTF-8なので
 Excelで開くと文字化けします。
 
-//image[kibana_dataTable][Data table]{
-  キャプチャを貼る
-//}
+#@#//image[kibana_dataTable][Data table]{
+#@#  キャプチャを貼る
+#@#//}
 
 === Heartmap chart
 
-//image[kibana_heartmapChart][Heartmap chart]{
-  キャプチャを貼る
-//}
+#@#//image[kibana_heartmapChart][Heartmap chart]{
+#@#  キャプチャを貼る
+#@#//}
 
 === Line chart
 　データの数に応じて点がプロットされ、それを線でつないだグラフです。
 データが存在している期間がばらけていない場合、点しか表示されないのでグラフとしては
 見づらいときもたまにあります。
 
-//image[kibana_lineChart][Line chart]{
-  キャプチャを貼る
-//}
+#@#//image[kibana_lineChart][Line chart]{
+#@#  キャプチャを貼る
+#@#//}
 
 === Markdown widget
 　Markdownを表示することができます。
 URLのリンクを記載したり、グラフの閲覧方法をメモ書きで残すことが可能です。
 
-//image[kibana_markdownWidget][Markdown widget]{
-  キャプチャを貼る
-//}
+#@#//image[kibana_markdownWidget][Markdown widget]{
+#@#  キャプチャを貼る
+#@#//}
 
 === Pie chart
 　データの内訳に応じて円が分かれていきます。円を分ける条件を指定しないと
 データの総件数が表示されるだけなので、パイを分割する設定を一緒に入れましょう。
 工夫次第でドーナツ型のグラフを作ることができます。
 
-//image[kibana_pieChart][Pie chart]{
-  キャプチャを貼る
-//}
+#@#//image[kibana_pieChart][Pie chart]{
+#@#  キャプチャを貼る
+#@#//}
 
 === Tag cloud
 
-//image[kibana_tagCloud][Tag cloud]{
-  キャプチャを貼る
-//}
+#@#//image[kibana_tagCloud][Tag cloud]{
+#@#  キャプチャを貼る
+#@#//}
 
 === Tile map
 　データの送信元情報がログなどに含まれていた場合、その情報がどこから来たのか
@@ -105,21 +105,21 @@ URLのリンクを記載したり、グラフの閲覧方法をメモ書きで�
 ちなみにKibana3,4などは世界地図情報の取得元サイトがサービスを終了してしまったため
 地図グラフを使うことはできなくなってしまいました…。
 
-//image[kibana_tileMap][Tile map]{
-  キャプチャを貼る
-//}
+#@#//image[kibana_tileMap][Tile map]{
+#@#  キャプチャを貼る
+#@#//}
 
 === Timeseries
 
-//image[kibana_timeseries][Timeseries]{
-  キャプチャを貼る
-//}
+#@#//image[kibana_timeseries][Timeseries]{
+#@#  キャプチャを貼る
+#@#//}
 
 === Vertical bar chart
 　データ件数の数だけ棒の長さが長くなる、棒グラフです。
-//image[kibana_verticalBarChart][Vertical bar chart]{
-  キャプチャを貼る
-//}
+#@#//image[kibana_verticalBarChart][Vertical bar chart]{
+#@#  キャプチャを貼る
+#@#//}
 
 == グラフの作成を行う
 
@@ -176,15 +176,15 @@ Unique Count  全てのfieldから選択可 XX
 今は内訳の表示方法を指定できていません。よってデータ数しか表示されないのです。
 早速指定してみましょう。
 
-//image[kibana_create_pieChart04][グラフを作成した直後]{
-  キャプチャを貼る
-//}
+#@#//image[kibana_create_pieChart04][グラフを作成した直後]{
+#@#  キャプチャを貼る
+#@#//}
 
 ==== Aggregation
 
 　まずは、データの内訳方法を決めます。指定できる内訳方法は次の表を参照してください。
 
-////table[Aggregation][Aggregationの種類]{
+//table[Aggregation][Aggregationの種類]{
 名前  データの内容
 ----------
 Date Histogram  カラム2
@@ -201,9 +201,9 @@ Significant Tearms
 詳細設定欄でfield名が選択できるようになりますので、そちらで好きなfieldを選択します。
 今回はfield名@<tt>{lang.keyword（つぶやきの言語名）}を選択します。
 
-//image[kibana_create_pieChart05][グラフを作成した直後]{
+#@#//image[kibana_create_pieChart05][グラフを作成した直後]{
   キャプチャを貼る
-//}
+#@#//}
 
 　これで色ごとに情報の内訳を表示することができるようになりました。
 画面右上に色に対応したfield名が表示されます。マウスを当てるとそのfieldのみ強調することが可能です。
@@ -241,11 +241,11 @@ ElasticSearchに負荷がかかり、性能が落ちてしまうのでほどほ�
 
 ==== Donut
 　文字通り、円グラフをドーナツ型にするか選択します。チェックを入れると円グラフがドーナツ型になります。
-参考として@<img>{kibana_donut}を準備しましたので、比較して好きな方を選択すれば良いでしょう。
+参考としてXXを準備しましたので、比較して好きな方を選択すれば良いでしょう。
 
-//image[kibana_donut][右：チェックボックスオン　左：チェックボックスオフ]{
+#@#//image[kibana_donut][右：チェックボックスオン　左：チェックボックスオフ]{
 
-//}
+#@#//}
 
 ==== Legend Position
 　画面右に出ているfield名前と色対応を示す部分を@<b>{Legend}といいます。

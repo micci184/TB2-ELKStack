@@ -1,148 +1,149 @@
-= データを集めて可視化しよう（Twitter編）
+= データを集めて可視化しよう（Twitterのログ編）
 
-//lead{
-　「環境はセットアップできた！でもどうやってログを集めればいいんだっけ？
-それにKibanaにアクセスしても何も出てこないよ？」
+== Twilogサービスを利用したログ取得
+
+　まずはLogstashに取り込むデータを準備します。今回はTwitterアカウントの発言証跡を
+追いかけるため、@<b>{Twilog}サービスを利用します。
+@<b>{Twilog}とは、Twitterでのツイートを自動で保存・閲覧できるサービスです。
+記録された履歴はCSV（SJIS/UTF-8）やXMLでダウンロードすることができます。
+今回はCSV（UTF-8）でダウンロードします。
+
+=== Twilogサービスへの登録
+　まず、@<href>{http://twilog.org}へアクセスします。
+@<b>{Sign in with Twitter}アイコンをクリックし、Twitterの認証画面で自分のアカウントに
+Twilogを登録してください。
+
+//image[Twilog_register][Twilogへの登録]{
+
 //}
 
-　おや？もふもふちゃんは大事なことを忘れてしまっているようです。
-Kibanaにデータを表示するためには、ElasticSearhにデータが入っていないとダメですよね。
+　認証後、Twilogの管理画面へアクセスします。
+Twilogは過去ツイートを200件分のログを取得するため、@<b>{過去ツイートの取得}から
+昔のツイートを全て取得しておきましょう。
 
-//lead{
-「確かにそうかも。今はElasticSearhの動作確認をしただけだから何もデータが入ってないなあ。
-どうやってデータを取り込めばいいのかな？」
+//image[Twilog_getlog][過去ツイートの取得]{
+
 //}
 
-　…もふもふちゃんの頭からはLogstashの存在がかき消されているようです。
-今回の構成では、ElasticSearhにデータを送るツールとしてLogstashを利用するのでしたね。
-まずはLogstashの設定をもふもふちゃんと一緒にやってみましょう。
+=== 過去ログのダウンロード
+　いよいよ過去ログのダウンロードを行います。とは言っても@<img>{Twilog_downloadCsv}の画面から
+好きな形式を選択してダウンロードするだけです。zip圧縮されているため、適宜解凍してください。ログは
+好きなディレクトリに配置して良いですが、読み取り権限がついているか確認してください。
 
-　目標は「Twitterのつぶやきから"イチゴメロンパン"という文言が含まれているものだけを抽出し
-Kibanaで分析しやすい形にしてElasticSearhに送る」ことです。
+//image[Twilog_downloadCsv][ログのダウンロード]{
 
-== Twitter APIの準備
-　まずはTwitter APiを準備しましょう。
-
-=== URLにアクセス
-
-　まずはTwitter APIのURLにアクセスします。
-あらかじめTwitterアカウントにログインしておく必要があります。
-
-@<href>{https://dev.twitter.com}
-
-　アクセス後、@<tt>{「Manage Your Apps」}リンクをクリックします。
-
-//image[Twitter_Developers01][Twitterアプリ作成]{
-/Usersmallow/review/text/text/images/Twitter_Developers01.png
 //}
 
-=== 必要事項の入力
-
-欄内の必要事項を記入します。
-
-//table[twitterApp][必要事項]{
-名前  記載内容
--------------------
-Name  アプリケーション名
-Description アプリケーションの概要
-Website アプリケーションを動かすためのトップページのURLを記載（ダミーデータ可）
-Callback  ユーザ認証後の戻り先のURLアドレス
+　ログを解凍して中身をみると、このように表示されました。これを延々と読むのはなかなか辛いものがあります。
+左から、@<tt>{Twitter ID}、@<tt>{つぶやいた日時}、@<tt>{つぶやいた時刻}、@<tt>{本文}となっています。
+//emlist[ログの中身]{
+# 抜粋
+"839273776948731904","170308 093716","でもその前に、トラブルシュートのダルさだけはなんとかしてほしいもんだな"
+"839273607192690688","170308 093635","KibanaのURLを共有しとけば簡単にレポートとか作れちゃうんだもんなあ"
+"839273190639591425","170308 093456","ElasticonのKeynote見たけど、Kibana Canvasは良さそうだと思いました"
 //}
 
-//image[Twitter_Developers02][入力画面1]{
-/Usersmallow/review/text/text/images/Twitter_Developers02.png
-//}
+　それではこのCSVファイルをLogstashに取り込んでみましょう。
 
-//image[Twitter_Developers03][入力画面2]{
-/Usersmallow/review/text/text/images/Twitter_Developers03.png
-//}
+== logstash.confの全体像
+　Logstashのデータ取得方法は@<tt>{logstash.conf}で設定します。
+@<tt>{logstash.conf}は@<b>{input}、@<b>{filter}、@<b>{output}の3つに
+分かれています。
 
-//image[Twitter_Developers04][入力画面3]{
-/Usersmallow/review/text/text/images/Twitter_Developers04.png
-//}
-
-　登録に成功すると、次のような画面が表示されます。
-
-//image[Twitter_Developers05][入力画面5]{
-  /Usersmallow/review/text/text/images/Twitter_Developers05.png
-//}
-
-=== 規約に同意して鍵をもらう
-
-　情報登録が完了すると、鍵情報が表示されます。
-@<tt>{Consumer Key (API Key)}はAPIの認証に必要です。
-@<tt>{Consumer Secret (API Secret)}は認証に必要な鍵情報です。パスワードと同等の扱いのため、他の人には教えてはいけません。
-
-== Logstashでデータを集めよう
-　では、いよいよlogstash.confを編集していきます。
-まずは、編集イメージを持つためにlogstash.confの構造をみてみましょう。
-
-=== logstash.confの構造
-　logstash.confはinput、filter、outputの3つにセクションが分かれています。
-まずはこちらをみてください。
-
-#@#//image[logstash_config][logstash.confの構造]{
-#@#/Users/mallow/review/text/text/images/logstash_config.png
-#@#//}
-
-==== input
+=== input
 　inputは、ログをどこから取得するか決める部分です。
 ログの取得間隔や、Logstashサービス再開時の挙動を指定することも可能です。
-
-==== filter
-　filterは、ログをどのように加工・整形するか決める部分です。
-「加工」とはいっても、取り込んだログの文言を書き換える、条件に一致するログを消去する等
-方法は様々です。
-
-==== output
-　outputは、ログをどこに送るか指定する部分です。
-前の章でも述べた通り、ElasticSearhへのデータ送付以外にもCSV形式など
-指定した拡張子でデータを出力することも可能です。
-
-=== inputプラグインを書いてみよう
-　では、早速Twitterのログを取り込んでみましょう。1番始めの部分に当たります。
 
 //image[logstash_config_input][logstash.conf（input）]{
 /Users/mallow/review/text/text/images/logstash_config_input.png
 //}
 
-　input部分では情報の取得元ごとにプラグインが提供されています。
-今回はTwitter情報を取得するため、twitterプラグインを使う指定を行います。
-先ほど取得したTwitterの鍵情報を@<tt>{logstash.conf}に記載しましょう。
 
-==== Twitterの検索キーワードを指定
-　keywordsオプションを利用して検索したい単語、条件を指定できます。"[]"で囲わないと
-構文エラーとなってしまいます。
+=== filter
+　filterは、ログをどのように加工・整形するか決める部分です。
+「加工」とはいっても、取り込んだログの文言を書き換える、条件に一致するログを消去する等
+方法は様々です。
 
-//cmd{
-input{
-  twitter{
-    consumer_key => "Twitter APIのconsumer_key"
-    consumer_secret => "Twitter APIのconsumer_secret"
-    oauth_token => "Twitter APIのAccess Token"
-    oauth_token_secret => "Twitter APIのAccess Token Secret"
-    keywords => ["検索したいもの"]
-    full_tweet => "true"
-  }
-}
+//image[logstash_config_filter][logstash.conf（filter）]{
+/Users/mallow/review/text/text/images/logstash_config_filter.png
 //}
 
-　複数検索したいものを指定する場合、コロンで繋げて記述します。
-
-//cmd{
-# イチゴメロンパン、logstash、elasticsearch、kibana、Elasticonを検索したい場合
-keywords => ["イチゴメロンパン","logstash","elasticsearch","kibana","Elasticon"]
-//}
-
-=== outputプラグインを書いてみよう
-　欲しい情報を集めた後は、ElasticSearhに送りたいですよね。
-@<tt>{logstash.conf}では1番最後に指定する部分です。
+=== output
+　outputは、ログをどこに送るか指定する部分です。
+前の章でも述べた通り、ElasticSearhへのデータ送付以外にもCSV形式など
+指定した拡張子でデータを出力することも可能です。
 
 //image[logstash_config_output][logstash.conf（output）]{
 /Users/mallow/review/text/text/images/logstash_config_output.png
 //}
 
-==== ログの送付先を指定する
+
+== inputプラグイン
+
+　input部分では情報の取得元ごとにプラグインが提供されています。
+今回はファイルを取得するため、@<b>{file}プラグインを使います。
+利用できるプラグインの種類は@<href>{https://www.elastic.co/guide/en/logstash/current/input-plugins.html}で
+確認することができます。
+
+　@<tt>{logstash.conf}の記載はJSON形式で行います。
+inputプラグインであれば、次のように記載します。
+
+//emlist[inputプラグインの記載方法]{
+input{
+  利用するプラグイン名{
+    設定を記載
+  }
+}
+//}
+
+=== pathの記載（input）
+　各プラグインには必須項目があります。@<tt>{file}プラグインでは@<b>{path}が
+必須項目にあたります。@<b>{path => ファイルパス}のように指定します。
+パスの指定には正規表現を利用できますが、フルパスで記載する必要があります。
+
+//emlist[pathの指定]{
+input{
+  file{
+    path => "/フォルダのフルパス/logs/**.csv"
+  }
+}
+//}
+
+=== 取り込んだログを標準出力する（output）
+　outputに@<b>{stdout}を指定すると、コンソール上に標準出力することができます。
+まずはファイルが取り込みできるかテストしてみましょう。
+
+//emlist[CSVをLogstashに取り込み標準出力するlogstash.conf]{
+input{
+  file{
+    path => "/フォルダのフルパス/logs/**.csv"
+  }
+}
+output{
+  stdout{ codec => rubydebug }
+}
+//}
+
+　Logstashの起動は先ほどと同じように@<tt>{/bin}下にある起動スクリプトから行います。
+起動すると、このようにコンソール出力されます。
+プロセスの終了は@<tt>{Ctl + C}で行います。
+
+//cmd{
+$ logstash-5.2.2/bin/logstash -f logstash-5.2.2/logstash.conf
+Sending Logstash's logs to /Users/mallow/ELK_Stack/logstash-5.2.2/logs which is now configured via log4j2.properties
+[2017-03-11T20:31:56,188][INFO ][logstash.pipeline        ] Starting pipeline {"id"=>"main", "pipeline.workers"=>4, "pipeline.batch.size"=>125, "pipeline.batch.delay"=>5, "pipeline.max_inflight"=>500}
+[2017-03-11T20:31:56,421][INFO ][logstash.pipeline        ] Pipeline main started
+[2017-03-11T20:31:56,513][INFO ][logstash.agent           ] Successfully started Logstash API endpoint {:port=>9600}
+//}
+
+== ファイルの読み込み位置を指定する（input）
+　実際にやってみるとわかりますが、このままではLogstashの標準出力には何も表示されません。
+デフォルトの設定では、@<b>{起動した後に更新された分だけファイルを読み取る}設定になっているためです。
+
+　どこまでファイルを読み取ったか
+
+
+== ログの送付先を指定する
 　今回はElasticSearhにログを送付するため、ElasticSearhプラグインを利用します。
 動作確認のため標準出力を可能にするstdoutプラグインも利用しましょう。
 output内に複数のプラグインを同時記述することができます。括弧の閉じ忘れには気をつけてください。
@@ -201,13 +202,9 @@ ElasticSearh→Logstash→Kibanaの順に起動します。
 ここはもう一踏ん張りしてみましょう。
 
 === filterプラグインを書いてみよう
-　今から編集する部分は、@<tt>{logstash.conf}の真ん中となる部分です。
+　今から編集する部分は、@<tt>{logstash.conf}のメインとなる部分です。
 
-//image[logstash_config_filter][logstash.conf（filter）]{
-/Users/mallow/review/text/text/images/logstash_config_filter.png
-//}
-
-==== fieldとtextにデータをうまく分ける（ElasticSearhのデータの持ち方を説明）
+== fieldとtextにデータをうまく分ける（ElasticSearhのデータの持ち方を説明）
 　先ほどKibanaを閲覧したとき、データがうまく分かれていなかったと思います。
 これはElasticSearhのデータの持ち方が@<tt>{field}に対する@<tt>{text}という構造になっているためです。
 fieldとは、データベースでのカラムに相当します。textはカラムの中に入っている実データです。
@@ -219,7 +216,7 @@ Kibanaでは1つのログの塊として認識されてしまい、データの�
 これではせっかくのKibanaの便利さも半減されてしまいます。
 では、どのようにログを分割すれば良いのでしょう？
 
-==== kvフィルタ：ログを分割する
+== kvフィルタ：ログを分割する
 　kvフィルタを使うことで、ログを分割することができます。
 どのように分割されるのか、具体例を用いながらみていきましょう。
 kvフィルタを利用する前は、このようにログが出力されます。
@@ -261,7 +258,7 @@ output {
 「aaa」の部分はfield項目扱いに、「bbb」の部分はtext項目扱いとなります。
 実際のログも区切り前がログの種類、区切り跡が実際の情報になりますからね。
 
-==== removeフィルタ：いらない情報は捨てる
+== removeフィルタ：いらない情報は捨てる
 
 //lead{
 　「うーん、ログにはTwitterアカウント名が含まれているけれど、ちょっとこれは個人情報っぽいから
@@ -284,7 +281,7 @@ output {
 
 本当になくなってしまいましたね…。
 
-==== timestampフィルタ：ログが出力された時刻を編集する
+== timestampフィルタ：ログが出力された時刻を編集する
 
 #@# 忘れたので調べる
 

@@ -1,6 +1,6 @@
 = Elastic Stackって何？
 
-////lead{
+//lead{
 「Elastic StackはElastic社が提供しているBIツール群っていうのはわかったけど、どんなツールがあるのかな？
 公式サイトを見るといっぱい種類があるみたいだけど…。」
 //}
@@ -35,7 +35,7 @@ Dockerのコンテナ検索、Facebook上での検索などが導入事例とし
 /Users/mallow/review/text/text/images/cluster01.png
 //}
 
-//image[cluster02][クラスターを利用する場合]{
+//image[cluster02][クラスターを利用する場合]{ 
 配置パス
 /Users/mallow/review/text/text/images/cluster02.png
 //}
@@ -46,11 +46,7 @@ ElasticSearchに限られているからです。
 == Kibana
 　Kibanaは、ElasticSearchに貯められている情報を整形して可視化する情報分析ツールです。
 開発言語はアナウンスは出ていないものの、ソース情報を見る限りJavaScriptがメインだと思われます。
-Google Chrome等のブラウザからKibana指定のURLにアクセスすることで、このようなグラフをすぐ表示することができます。
-
-//image[Kibana01][Kibana画面のサンプル]{
-配置パス
-//}
+Google Chrome等のブラウザからKibana指定のURLにアクセスすることで、データ情報を表示することができます。
 
 　Kibanaでは知りたい情報の件数だけでなく、折れ線グラフ・棒グラフ・円グラフを用いてログの詳細な情報を解析し
 色分けして表示することが可能です。グラフの大きさを決める際にコンフィグなどを編集する必要はなく、ブラウザ上での操作で
