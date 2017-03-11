@@ -1,9 +1,14 @@
 PREDEF:
-
+  - introduction.re
 CHAPS:
-  - text.re
+  - Elastic_Stack.re
+  - install.re
+  - logstash_setting.re
+  - kibana_discover.re
+  - kibana_visualize.re
+  - kibana_dashboard.re
+  - end.re
 
 APPENDIX:
 
 POSTDEF:
-
