@@ -239,8 +239,8 @@ field名は完全一致で記載する必要がありますが、実際に指定
 WW:XX AND YY:ZZ
 //}
 
-実際に@<tt>{Insurance}で内訳を見ると、@<img>{kibana_Insurance_someSearchPattern}のように表示されます。
-//image[kibana_Insurance_someSearchPattern][条件一致の検索]{
+実際に@<tt>{Insurance}で内訳を見ると、@<img>{kibana_Insurance_someSearch}のように表示されます。
+//image[kibana_Insurance_someSearch][条件が片方一致の検索]{
   キャプチャを貼る
 //}
 
@@ -360,11 +360,11 @@ Quick Relative  Absolute
 その後、先ほど保存した検索条件を再度指定してみましょう。@<b>{Open}ボタンをクリックします。
 先ほど保存した検索条件の名前が出てくるので、好きなものを選択します。
 
-//image[kibana_saveSearchPattern_open][保存した検索条件の選択]{
+//image[kibana_saveSearchPattern_find][保存した検索条件の選択]{
   キャプチャを貼る
 //}
 
-//image[kibana_saveSearchPattern_name][保存した検索条件の選択後]{
+//image[kibana_saveSearchPattern_open][保存した検索条件の選択後]{
   キャプチャを貼る
 //}
 
