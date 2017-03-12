@@ -294,7 +294,7 @@ output{
 }
 //}
 
-=== filterプラグイン
+== filterプラグイン
 　今の状態だと、ログはこのように連携されます。@<tt>{=>}より左はfield部分、右は実際のデータです。
 //emlist[標準出力で出ているログ]{
 {
@@ -317,7 +317,7 @@ output{
 プラグインの一覧は@<href>{https://www.elastic.co/guide/en/logstash/current/filter-plugins.html}に
 情報がまとまっています。
 
-== CSV形式のログを分割する
+=== CSV形式のログを分割する
 　CSV形式のログを分割するためには@<b>{csv}プラグインを利用します。
 必須項目はありません。指定は@<code>{　csv {\} }というように行います。
 
@@ -364,34 +364,199 @@ output{
 }
 //}
 
-== 
+=== カラムのデータ型を変更する
+　@@<b>{convert}を使うと、@@<tt>{column1}、@@<tt>{column2}（以下略）内のデータ型を指定することができます。
+@<code>{convert => { "column1" => "変更したい型" \} }のように記載します。変更できる型は
+@<table>{convertList}を参照してください。変更しない場合、全て文字型として扱われます。
 
-== ログが出力された時刻を編集する
+//table[convertList][convertオプションで変更できる型]{
+指定できるもの  データ型
+----------
+integer  数値
+float 浮動小数点数
+date  日付
+date_time 日付と時刻
+boolean boolean
+//}
+
+　今回はcolumn2の中に日付と時刻が記載されているため、column2のみ型を変更します。
+//emlist[convertを記載したlogstash.conf]{
+filter{
+  csv{
+    convert => {
+      "column2" => "date_time"
+    }
+  }
+}
+//}
+
+=== 不要なfieldを消す
+　時には見せたくないカラムの情報もあるかと思います。今回は@@<tt>{column1}、@@<tt>{path}
+@@<tt>{host}の情報は丸ごと不要なので、消してしまいたいと思います。
+
+//emlist[不要なfield（今回の場合）]{
+{
+       "column1" => "700941673379987456",
+          "path" => "/Users/mallow/ELK_Stack/logs/froakie0021170311.csv",
+          "host" => "ishiiaoi-no-MacBook-Pro.local",
+}
+//}
+
+　fieldごと情報を削除したい場合、@@<b>{remove_field}オプションを利用します。
+@@<code>{remove_field => ["削除したいfield名"]}のように指定します。
+複数指定する場合、コロンで繋げます。
+
+//emlist[remove_fieldオプションの指定例]{
+filter{
+  csv{
+    remove_field => ["column1", "host", "path"]
+  }
+}
+//}
+
+　実行すると、指定したfieldは丸ごと削除されます。
+//emlist[remove_field指定後の出力結果]{
+{
+    "@timestamp" => 2017-03-12T01:16:04.983Z,
+       "column3" => "いちごメロンパン食べたい #precure",
+       "column2" => "160512 222643",
+      "@version" => "1",
+       "message" => "\"730751058306162689\",\"160512 222643\",\"いちごメロンパン食べたい #precure\"",
+          "tags" => [
+        [0] "CSV"
+    ]
+}
+//}
+
+=== ログが出力された時刻を編集する
 　@@<tt>{@timestamp}の時刻が実際のログとずれる理由ですが、Logstashの仕様に原因があります。
 Logstashは@@<b>{データを取り込んだ時間}を@@<tt>{@timestamp}として付与します。
 これにより、データの持っている時刻と@@<tt>{@timestamp}の時間がずれているように見えたのです。
 
-　これを解消するためには
+　また、Logstashは世界標準時間（UTF）を利用するので、日本時間からマイナス9時間されてしまいます。
+これらを解消するためには、@@<tt>{@timestamp}の情報をデータ内の情報で置き換える必要があります@@<fn>{dateAttention}。
 
-=== 最後に動作確認
+//footnote[dateAttention][必須の処理ではありませんが、いつデータが出力されたのか知りたい場合、この方法を取ることをお勧めします]
 
-　「よーし、いい感じにlogstashフィルタがかけたよ！一度テキストに出力して動作確認してみよう！」
+　このように、時刻を変更したい場合@@<b>{date}フィルタを指定します。
+@@<tt>{date}フィルタの@@<b>{match}オプションを使ってどのfieldを時刻として利用するか決定しましょう。
+@<code>{match => ["field名", "実データの日付記載方式", "変換方法"]}と指定します。
 
-　お、もふもふちゃん、@<tt>{logstash.conf}が一通り書けたようですね。もふもふちゃんのいう通り、
-テキストなどに出力して結果を確かめるのは良いことです。
+　field名@@<tt>{column2}内のデータ@<tt>{16年05月12日 22時26分43秒"}を
+@@<tt>{ISO8601}形式で置き換える場合、このような指定方法となります。
 
-　いきなりElasticSearchに連携してしまうと、意図していないfieldに分割されてしまったのでやり直したいとなったときに
-無駄なデータを溜めてしまうことになります。ElasticSearchからデータを削除するためには
-削除用のクエリをElasticSearchに直接投げる必要があります。あまり面倒なことはしたくないですよね。
-なので、一度コンフィグが書けたらどこかに出力して動作確認するようにしましょう。
-面倒であれば、標準出力でも良いと思います。
+//emlist[matchオプションの指定例]{
+date{
+  match => [ "column2", "YYMMdd HHmmss", "ISO8601" ]
+}
+//}
 
-#@# 全部盛りのlogstash.confを記載
+　実際に出力してみると、@@<tt>{@timestamp}の項目がログの時刻と一致していることがわかります。
+//emlist[matchオプション指定後の出力結果（抜粋）]{
+{
+    "@timestamp" => 2016-05-12T13:26:43.000Z,
+       "column2" => "160512 222643",
+}
+//}
 
-ちなみに、logstash.confのコメントアウトは「#」を利用して行います。
-このコンフィグを起動するとこのようにログが取り込まれます。
+　時刻の指定方法は@<href>{https://www.elastic.co/guide/en/logstash/current/plugins-filters-date.html}に
+記載があります。
 
-#@# 実際のログを貼り付け
+== logstash.confのテスト方法
+　@@<tt>{logstash.conf}を作成するときは、このようにログの取り込み・出力を繰り返しながら
+必要なぶんだけデータ連携されるように調整を繰り返すことになります。
+@@<tt>{logstash.conf}の編集を繰り返していくと文法ミスが見つけにくくなるため、
+適宜コンフィグのテストを行いましょう。
 
-　ちゃんと動作しているようですね。ただ、標準出力でデータを追いかけることは避けたいものです。
-今度はKibanaを使ってデータを可視化してみましょう。
+　コンフィグのテストはLogstashの起動時に@@<b>{-t}オプションを指定するだけです。
+コンフィグが間違っている場合、行数をエラー出力してくれます。この場合はdateフィルタの
+書き方が間違っていました。
+
+//emlist[記載していたコンフィグ（抜粋）]{
+filter{
+  csv{
+    convert => {
+      "column2" => "date_time"
+    }
+    remove_field => [ "column1", "host", "message", "path", "@version" ]
+  }
+  date{
+    match => [ "column2" => "YYMMdd HHmmss", "ISO8601" ]
+    remove_field => [ "column2" ]
+  }
+}
+//}
+
+//emlist[コンフィグテストの例]{
+ishiiaoi-no-MacBook-Pro:~ mallow$ ELK_Stack/logstash-5.2.2/bin/logstash -f ELK_Stack/logstash-5.2.2/logstash.conf  -t
+Sending Logstash's logs to /Users/mallow/ELK_Stack/logstash-5.2.2/logs which is now configured via log4j2.properties
+[2017-03-12T10:50:00,519][FATAL][logstash.runner          ] The given configuration is invalid. Reason: Expected one of #, {, ,, ] at line 18, column 25 (byte 323) after filter{
+  csv{
+    convert => {
+      "column2" => "date_time"
+    }
+    remove_field => ["column1", "host", "message", "path", "version"]
+  }
+  date{
+    match => ["column2"
+
+//}
+
+== 今回作成したlogstash.conf
+　章の最後に、今回作成した@@<tt>{logstash.conf}を記載します。
+@@<tt>{column2}はdateフィルタで@@<tt>{@timestamp}に変換後は不要なカラムと
+なるため、削除しました。そのほかにも余計な情報は極力落とすようにしています。
+また、コメントアウトは@<code>{# （半角スペース）}で行います。
+
+//emlist[作成したlogstash.conf]{
+input{
+  file{
+    exclude => "*.zip"
+    path => "/Users/mallow/ELK_Stack/logs/**.csv"
+    start_position => "beginning"
+    tags => "CSV"
+  }
+}
+
+filter{
+  csv{
+    convert => {
+      "column2" => "date_time"
+    }
+    remove_field => [ "column1", "host", "message", "path", "@version" ]
+  }
+  date{
+    match => [ "column2", "YYMMdd HHmmss", "ISO8601" ]
+    remove_field => [ "column2" ]
+  }
+}
+
+output{
+# stdout{
+#   codec => rubydebug
+# }
+ elasticsearch{
+   hosts => "http://localhost:9200/"
+ }
+}
+//}
+
+　実際のデータとLogstashへの取り込み結果を比較してみます。出力結果は標準出力の結果ですが
+ElasticSearhにも同じように連携されます。
+
+//emlist[取り込んだデータ]{
+"730751058306162689","160512 222643","いちごメロンパン食べたい #precure"
+//}
+
+//emlist[出力結果]{
+{
+    "@timestamp" => 2016-05-12T13:26:43.000Z,
+       "column3" => "いちごメロンパン食べたい #precure",
+          "tags" => [
+        [0] "CSV"
+    ]
+}
+//}
+
+　次は、Logstashで取り込んだデータをグラフで可視化しましょう。
+ElasticSearhを起動後、Logstashを連携してログを連携しておきます。
