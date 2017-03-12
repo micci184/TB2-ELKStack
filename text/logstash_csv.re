@@ -55,7 +55,7 @@ Twilogは過去ツイートを200件分のログを取得するため、@<b>{過
 ログの取得間隔や、Logstashサービス再開時の挙動を指定することも可能です。
 
 //image[logstash_config_input][logstash.conf（input）]{
-/Users/mallow/review/text/text/images/logstash_config_input.png
+/Users/mofumofu/review/text/text/images/logstash_config_input.png
 //}
 
 
@@ -65,7 +65,7 @@ Twilogは過去ツイートを200件分のログを取得するため、@<b>{過
 方法は様々です。
 
 //image[logstash_config_filter][logstash.conf（filter）]{
-/Users/mallow/review/text/text/images/logstash_config_filter.png
+/Users/mofumofu/review/text/text/images/logstash_config_filter.png
 //}
 
 === output
@@ -74,7 +74,7 @@ Twilogは過去ツイートを200件分のログを取得するため、@<b>{過
 指定した拡張子でデータを出力することも可能です。
 
 //image[logstash_config_output][logstash.conf（output）]{
-/Users/mallow/review/text/text/images/logstash_config_output.png
+/Users/mofumofu/review/text/text/images/logstash_config_output.png
 //}
 
 
@@ -130,7 +130,7 @@ output{
 
 //cmd{
 $ logstash-5.2.2/bin/logstash -f logstash-5.2.2/logstash.conf
-Sending Logstash's logs to /Users/mallow/ELK_Stack/logstash-5.2.2/logs which is now configured via log4j2.properties
+Sending Logstash's logs to /Users/mofumofu/ELK_Stack/logstash-5.2.2/logs which is now configured via log4j2.properties
 [2017-03-11T20:31:56,188][INFO ][logstash.pipeline        ] Starting pipeline {"id"=>"main", "pipeline.workers"=>4, "pipeline.batch.size"=>125, "pipeline.batch.delay"=>5, "pipeline.max_inflight"=>500}
 [2017-03-11T20:31:56,421][INFO ][logstash.pipeline        ] Pipeline main started
 [2017-03-11T20:31:56,513][INFO ][logstash.agent           ] Successfully started Logstash API endpoint {:port=>9600}
@@ -184,7 +184,7 @@ exclude => "*.zip"
 input{
   file{
     exclude => "*.zip"
-    path => "/Users/mallow/ELK_Stack/logs/**.csv"
+    path => "/Users/mofumofu/ELK_Stack/logs/**.csv"
     start_position => "beginning"
     tags => "CSV"
   }
@@ -198,19 +198,19 @@ output{
 　この状態でLogstashを起動すると、CSVのデータが標準出力されます。
 //cmd{
   $ logstash-5.2.2/bin/logstash -f logstash-5.2.2/logstash.conf
-  Sending Logstash's logs to /Users/mallow/ELK_Stack/logstash-5.2.2/logs which is now configured via log4j2.properties
+  Sending Logstash's logs to /Users/mofumofu/ELK_Stack/logstash-5.2.2/logs which is now configured via log4j2.properties
   [2017-03-11T20:31:56,188][INFO ][logstash.pipeline        ] Starting pipeline {"id"=>"main", "pipeline.workers"=>4, "pipeline.batch.size"=>125, "pipeline.batch.delay"=>5, "pipeline.max_inflight"=>500}
   [2017-03-11T20:31:56,421][INFO ][logstash.pipeline        ] Pipeline main started
   [2017-03-11T20:31:56,513][INFO ][logstash.agent           ] Successfully started Logstash API endpoint {:port=>9600}
   ^C[2017-03-11T20:46:29,527][WARN ][logstash.runner          ] SIGINT received. Shutting down the agent.
   [2017-03-11T20:46:29,537][WARN ][logstash.agent           ] stopping pipeline {:id=>"main"}
   $ logstash-5.2.2/bin/logstash -f logstash-5.2.2/logstash.conf
-  Sending Logstash's logs to /Users/mallow/ELK_Stack/logstash-5.2.2/logs which is now configured via log4j2.properties
+  Sending Logstash's logs to /Users/mofumofu/ELK_Stack/logstash-5.2.2/logs which is now configured via log4j2.properties
   [2017-03-11T22:07:14,824][INFO ][logstash.pipeline        ] Starting pipeline {"id"=>"main", "pipeline.workers"=>4, "pipeline.batch.size"=>125, "pipeline.batch.delay"=>5, "pipeline.max_inflight"=>500}
   [2017-03-11T22:07:15,039][INFO ][logstash.pipeline        ] Pipeline main started
   [2017-03-11T22:07:15,194][INFO ][logstash.agent           ] Successfully started Logstash API endpoint {:port=>9600}
   {
-            "path" => "/Users/mallow/ELK_Stack/logs/froakie0021170311.csv",
+            "path" => "/Users/mofumofu/ELK_Stack/logs/froakie0021170311.csv",
       "@timestamp" => 2017-03-11T13:07:15.099Z,
         "@version" => "1",
             "host" => "XX.local",
@@ -220,7 +220,7 @@ output{
       ]
   }
   {
-            "path" => "/Users/mallow/ELK_Stack/logs/froakie0021170311.csv",
+            "path" => "/Users/mofumofu/ELK_Stack/logs/froakie0021170311.csv",
       "@timestamp" => 2017-03-11T13:07:15.113Z,
         "@version" => "1",
             "host" => "XX.local",
@@ -278,7 +278,7 @@ Kibanaを用いてデータを取り出す速度を上げることができま�
 input{
   file{
     exclude => "*.zip"
-    path => "/Users/mallow/ELK_Stack/logs/**.csv"
+    path => "/Users/mofumofu/ELK_Stack/logs/**.csv"
     start_position => "beginning"
     tags => "CSV"
   }
@@ -298,7 +298,7 @@ output{
 　今の状態だと、ログはこのように連携されます。@<tt>{=>}より左はfield部分、右は実際のデータです。
 //emlist[標準出力で出ているログ]{
 {
-          "path" => "/Users/mallow/ELK_Stack/logs/froakie0021170311.csv",
+          "path" => "/Users/mofumofu/ELK_Stack/logs/froakie0021170311.csv",
     "@timestamp" => 2017-03-11T13:07:15.113Z,
       "@version" => "1",
           "host" => "XX.local",
@@ -325,7 +325,7 @@ output{
 input{
   file{
     exclude => "*.zip"
-    path => "/Users/mallow/ELK_Stack/logs/**.csv"
+    path => "/Users/mofumofu/ELK_Stack/logs/**.csv"
     start_position => "beginning"
     tags => "CSV"
   }
@@ -351,12 +351,12 @@ output{
 //emlist[csvフィルタを指定してLogstashを起動した場合]{
 {
        "column1" => "700941673379987456",
-          "path" => "/Users/mallow/ELK_Stack/logs/froakie0021170311.csv",
+          "path" => "/Users/mofumofu/ELK_Stack/logs/froakie0021170311.csv",
     "@timestamp" => 2017-03-11T14:20:08.119Z,
        "column3" => "test",
        "column2" => "160220 161452",
       "@version" => "1",
-          "host" => "ishiiaoi-no-MacBook-Pro.local",
+          "host" => "XX.local",
        "message" => "\"700941673379987456\",\"160220 161452\",\"test\"",
           "tags" => [
         [0] "CSV"
@@ -397,8 +397,8 @@ filter{
 //emlist[不要なfield（今回の場合）]{
 {
        "column1" => "700941673379987456",
-          "path" => "/Users/mallow/ELK_Stack/logs/froakie0021170311.csv",
-          "host" => "ishiiaoi-no-MacBook-Pro.local",
+          "path" => "/Users/mofumofu/ELK_Stack/logs/froakie0021170311.csv",
+          "host" => "XX.local",
 }
 //}
 
@@ -488,8 +488,8 @@ filter{
 //}
 
 //emlist[コンフィグテストの例]{
-ishiiaoi-no-MacBook-Pro:~ mallow$ ELK_Stack/logstash-5.2.2/bin/logstash -f ELK_Stack/logstash-5.2.2/logstash.conf  -t
-Sending Logstash's logs to /Users/mallow/ELK_Stack/logstash-5.2.2/logs which is now configured via log4j2.properties
+$ ELK_Stack/logstash-5.2.2/bin/logstash -f ELK_Stack/logstash-5.2.2/logstash.conf  -t
+Sending Logstash's logs to /Users/mofumofu/ELK_Stack/logstash-5.2.2/logs which is now configured via log4j2.properties
 [2017-03-12T10:50:00,519][FATAL][logstash.runner          ] The given configuration is invalid. Reason: Expected one of #, {, ,, ] at line 18, column 25 (byte 323) after filter{
   csv{
     convert => {
@@ -512,7 +512,7 @@ Sending Logstash's logs to /Users/mallow/ELK_Stack/logstash-5.2.2/logs which is 
 input{
   file{
     exclude => "*.zip"
-    path => "/Users/mallow/ELK_Stack/logs/**.csv"
+    path => "/Users/mofumofu/ELK_Stack/logs/**.csv"
     start_position => "beginning"
     tags => "CSV"
   }
