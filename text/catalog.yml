@@ -3,7 +3,7 @@ PREDEF:
 CHAPS:
   - Elastic_Stack.re
   - install.re
-  - logstash_setting.re
+  - logstash_csv.re
   - kibana_discover.re
   - kibana_visualize.re
   - kibana_dashboard.re
