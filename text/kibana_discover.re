@@ -35,15 +35,24 @@ Googleの画像検索で出てくるKibanaの画面は、Dashboardの画面が�
   Discoverの画面キャプチャ
 //}
 
-=== Timelion：時系列データを追いかける
+=== Timelion：関数を定義してグラフを複数描画する
+　Timelionでは独自の関数を指定すると、グラフを複数描画することができます。
+Visualizeでは1つの画面には1種類のグラフしか描画することはできません。
+Timelionでは1つの画面に線グラフと棒グラフを両立させることができます。
+　後ほどVisualizeの紹介で@<tt>{Tile map}というグラフが出てきますが
+そちらのグラフと同じ画面です。
 
-=== Dev Tools：各種設定画面
+=== Dev Tools：ElasticSearch用のクエリをテストする
+　ElasticSearchからデータを取得するためには、curlコマンドでGETをElasticSearchに投げます。
+Dev ToolsではElasticSearchに直接クエリを投げることができます。
+
+//image[kibana_DevTools][DevTools画面の例]{
+  画面キャプチャ
+//}
+
+=== Management：Kibanaの設定画面
 　ElasticSearchのindex情報が更新されたときや、必要なくなったグラフを削除したいときに使用します。
 名前の通り設定画面です。
-
- Settingsのキャプチャを入れる
-
-=== Management：
 
 == Discover画面を使ってみよう
 　まず始めに、Discover画面を使ってデータ分析を行ってみましょう。
