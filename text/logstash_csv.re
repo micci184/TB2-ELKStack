@@ -440,14 +440,15 @@ Logstashは@<b>{データを取り込んだ時間}を@<tt>{@timestamp}として�
 
 　このように、時刻を変更したい場合@<b>{date}フィルタを指定します。
 @<tt>{date}フィルタの@<b>{match}オプションを使ってどのfieldを時刻として利用するか決定しましょう。
-@<code>{match => ["field名", "実データの日付記載方式", "変換方法"]}と指定します。
+@<code>{match => ["field名", "実データの日付記載方式" または "変換方法"]}と指定します。
 
 　field名@<tt>{column2}内のデータ@<tt>{16年05月12日 22時26分43秒"}を
-@<tt>{ISO8601}形式で置き換える場合、このような指定方法となります。
+置き換える場合、このような指定方法となります。@<code>{match => [ "column2", "YYMMdd HHmmss", "ISO8601" ]}
+と指定すると、"YYMMdd HHmmss"の形式または"ISO8601"のデータがログに含まれていた場合@<tt>{@timestamp}に変換します。
 
 //emlist[matchオプションの指定例]{
 date{
-  match => [ "column2", "YYMMdd HHmmss", "ISO8601" ]
+  match => [ "column2", "YYMMdd HHmmss" ]
 }
 //}
 
@@ -460,7 +461,7 @@ date{
 //}
 
 　時刻の指定方法は@<href>{https://www.elastic.co/guide/en/logstash/current/plugins-filters-date.html}に
-記載があります。
+記載があります。変換方法はカンマで複数指定することが可能です。
 
 == logstash.confのテスト方法
 　@<tt>{logstash.conf}を作成するときは、このようにログの取り込み・出力を繰り返しながら
