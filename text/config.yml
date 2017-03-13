@@ -277,19 +277,24 @@ epubmaker:
 texstyle: reviewmacro
 #
 # LaTeX用のdocumentclassを指定する
-texdocumentclass: ["jsbook", "b5j"]
+# texdocumentclass: ["jsbook", "b5j"]
+texdocumentclass: ["jsbook", "oneside"]
 #
 # LaTeX用のコマンドを指定する
 # texcommand: "uplatex"
+texcommand: "platex"
 #
 # LaTeXのコマンドに渡すオプションを指定する
 # texoptions: null
+texoptions: "-kanji=utf-8"
 #
 # LaTeX用のdvi変換コマンドを指定する(dvipdfmx)
 # dvicommand: "dvipdfmx"
+dvicommand: dvipdfmx
 #
 # LaTeX用のdvi変換コマンドのオプションを指定する
 # dvioptions: "-d 5"
+dvioptions: "-d 5"
 
 # 以下のパラメータを有効にするときには、
 # pdfmaker:
