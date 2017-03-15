@@ -21,4 +21,4 @@ https://github.com/kmuto/review/blob/master/doc/format.ja.md
 
 
 ## githubの使い方がわからない
-資料を準備中ß
+資料を準備中

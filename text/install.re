@@ -5,12 +5,12 @@
 …あれ、なんかインストール方法もいっぱいあるみたい。どれを選べばいいのかなあ？」
 //}
 
-　あら？もふもふちゃん、今度はインストールで詰まってしまったようです。
+あら？もふもふちゃん、今度はインストールで詰まってしまったようです。
 公式サイトからダウンロードでzipファイルを落としてくることができるようですが、他のやり方もあるようです。
 状況に合っている1番いいやり方を選択したいですよね。一緒にみてみましょう。
 
 == インストールの順番
-　インストールの前に、どのツールからインストールするかを決めておきましょう。ELKのデータの流れを考えると、
+インストールの前に、どのツールからインストールするかを決めておきましょう。ELKのデータの流れを考えると、
 ElasticSearch→Logstash→Kibanaの順にインストールすることをお勧めします。
 理由は図X.Xにあるように、Logstashで取りこんだデータをElasticSearchに連携するため
 先にデータの連携先をセットアップしておかないと正しく動作確認ができない可能性があるためです。
@@ -20,7 +20,7 @@ ElasticSearch→Logstash→Kibanaの順にインストールすることをお�
   /Users/mallow/review/text/text/images/data.png
 //}
 
-　また、Kibanaは起動前にElasticSearchのURLを指定する必要があるため、ElasticSearchがセットアップされていないと
+また、Kibanaは起動前にElasticSearchのURLを指定する必要があるため、ElasticSearchがセットアップされていないと
 そもそも動作しません。今回は各ツールごとに完結できる動作確認方法を取りますが、万が一に備えるという意味では
 図X.Xのようにデータの連携先→連携元→データ閲覧ツールという流れでセットアップした方が良いでしょう。
 
@@ -30,17 +30,17 @@ ElasticSearch→Logstash→Kibanaの順にインストールすることをお�
 //}
 
 == ElasticSearhのインストール
-　先にも述べましたが、インストール方法は複数準備されています。導入の目的とご自身の環境に合わせて
+先にも述べましたが、インストール方法は複数準備されています。導入の目的とご自身の環境に合わせて
 ベストなものを選択すると良いでしょう。
 
 === とにかく使ってみたい場合（Linux）：zipファイル
 
-　「とにかくどんなものか試してみたい！」そんな方はzipファイルを公式サイトからダウンロードしてきましょう。
+「とにかくどんなものか試してみたい！」そんな方はzipファイルを公式サイトからダウンロードしてきましょう。
 インストール方法も適当なフォルダにzipファイルを解凍するだけなので導入は簡単に終わります。
 ただし、serviceコマンドは付属しないため、長期的な運用を考えている場合には向かないインストール方法です。
 
 === ちゃんと運用もしたい場合（rpmパッケージを利用するLinux）：rpmパッケージ
-　Elastic公式から提供されているrpmパッケージを利用した場合、serviceコマンドが自動的にダウンロードされます。
+Elastic公式から提供されているrpmパッケージを利用した場合、serviceコマンドが自動的にダウンロードされます。
 また、各種設定ファイルやディレクトリ構造はLinuxのディレクトリ形式に合わせて構築されます。
 運用を検討している場合は、初めからこちらのやり方を取っておけば環境の再構築を防ぐことができます。
 
@@ -50,27 +50,27 @@ ElasticSearch→Logstash→Kibanaの順にインストールすることをお�
 * 基本的なファイルの配置先：/opt/elasticsearch
 
 === ちゃんと運用もしたい場合（debパッケージを利用するLinux）：debパッケージ
-　こちらも2のやり方と同様です。違いはUbuntu系のLinux用パッケージを使うか、
+こちらも2のやり方と同様です。違いはUbuntu系のLinux用パッケージを使うか、
 RedHat、OpenSuSE系のLinux用パッケージを使うかだけです。
 
 === とにかく使ってみたい場合かつ、Docker実行環境がある場合：Dockerコンテナ
-　Elastic StackをDocker社が利用していることもあってか、Elastic公式からDockerイメージが提供されています。
+Elastic StackをDocker社が利用していることもあってか、Elastic公式からDockerイメージが提供されています。
 手っ取り早く試してみたい場合、かつDockerコンテナの実行環境がある場合は素直にコンテナを利用した方が良いでしょう。
 ただし、インストール方式の2.3に移行を考えている場合、構成がかなり変わるので初めからパッケージ利用での環境構築方法を選択した方が良さそうです。
 
-　また、ElasticSearhは物理的にも、Javaのヒープメモリもかなり消費するツールです。
+また、ElasticSearhは物理的にも、Javaのヒープメモリもかなり消費するツールです。
 Dockerコンテナ上ではあまり性能が出ないため、大量のデータを流す予定がある場合はコンテナ利用を避けた方が良いです。
 
 === Puppet、Chef、Ansibleの実行環境がある場合：Githubのレシピを利用
-　Elastic公式から各ツールのレシピが共有されています。Githubにアップロードされているため
+Elastic公式から各ツールのレシピが共有されています。Githubにアップロードされているため
 そちらを用いて環境を構築することも可能です。
 
 === Windows/Mac上に構築する場合：zipファイル
-　Windowsの場合、インストール方法はzipファイル一択となります。Macはbrewコマンドを用いることで
+Windowsの場合、インストール方法はzipファイル一択となります。Macはbrewコマンドを用いることで
 インストールすることもできますが、Elastic公式ではサポートされていないようなので、
 今回はインストール方法から対象外としています。
 
-　他の方が検証されているログを見る限り、brewコマンドでインストールした場合はtar.gzパッケージを解凍して
+他の方が検証されているログを見る限り、brewコマンドでインストールした場合はtar.gzパッケージを解凍して
 インストールしているように見えるため、公式の最新ファイルをダウンロードしてインストールするのと特に変わらないと思います。
 好みで選択すると良いでしょう。
 
@@ -82,7 +82,7 @@ zipファイルを用いたインストールの場合、OSが違っていても
 
 === 公式サイトからzipファイルをダウンロード
 
-　Elasticの公式サイトにアクセスし、zipファイルをダウンロードします。
+Elasticの公式サイトにアクセスし、zipファイルをダウンロードします。
 
 @<href>{https://www.elastic.co/jp/downloads/elasticsearch}
 
@@ -92,7 +92,7 @@ zipファイルを用いたインストールの場合、OSが違っていても
 
 === 作業用ディレクトリを作成（好みで良いです）
 
-　今回は検証用の環境構築なので、アンインストールを簡単にするために作業用ディレクトリを作成します。
+今回は検証用の環境構築なので、アンインストールを簡単にするために作業用ディレクトリを作成します。
 
 //cmd{
 $ mkdir ELK_Stack
@@ -100,7 +100,7 @@ $ mkdir ELK_Stack
 
 === zipファイルの解凍
 
-　ディレクトリ内にダウンロードしたzipファイルを解凍します。
+ディレクトリ内にダウンロードしたzipファイルを解凍します。
 
 //cmd{
 # 必要であれば
@@ -110,7 +110,7 @@ $ unzip elasticsearch-5.2.2
 
 === ElasticSearhの起動
 
-　@<tt>{/bin}ディレクトリ下にある@<tt>{elasticsearch}スクリプトを実行し、サービスを起動します。
+@<tt>{/bin}ディレクトリ下にある@<tt>{elasticsearch}スクリプトを実行し、サービスを起動します。
 OSがWindowsの場合、@<tt>{elasticsearch.bat}を実行します。
 
 //cmd{
@@ -142,7 +142,7 @@ $ elasticsearch-5.2.2 mofumofu$ bin/elasticsearch
 
 === 動作確認
 
-　ElasticSearuへクエリを投げ、返り値があるか確認します。
+ElasticSearuへクエリを投げ、返り値があるか確認します。
 返り値が帰ってくれば、正常にインストールできています。
 
 //cmd{
@@ -176,11 +176,11 @@ LogstashもElasticSearhと同様、インストール方式を選択すること
 
 ==={logstash-zip} とにかく使ってみたい場合（Linux）：zipファイル
 
-　こちらもElasticSearhと同様、zipファイルを展開するだけでインストールが終了します。
+こちらもElasticSearhと同様、zipファイルを展開するだけでインストールが終了します。
 serviceコマンドは付属しません。
 
 ==={logstash-rpm}  ちゃんと運用もしたい場合（rpmパッケージを利用するLinux）：rpmパッケージ
-　こちらもserviceコマンドの存在や、ディレクトリ構成が自動で割り当てられる点なども
+こちらもserviceコマンドの存在や、ディレクトリ構成が自動で割り当てられる点なども
 ElasticSearhと同様です。
 
 例）
@@ -189,31 +189,31 @@ ElasticSearhと同様です。
 * 基本的なファイルの配置先：/opt/logstash/
 
 ==={logstash-deb} ちゃんと運用もしたい場合（debパッケージを利用するLinux）：debパッケージ
-　こちらもElasticSearhと同様です。
+こちらもElasticSearhと同様です。
 
 ==={logstash-docker} とにかく使ってみたい場合かつ、Docker実行環境がある場合：Dockerコンテナ
-　ElasticSearhと同様、Elastic社からDockerコンテナが提供されています。
+ElasticSearhと同様、Elastic社からDockerコンテナが提供されています。
 ただし、ElasticSearhとは別のコンテナのため、同時にコンテナを複数起動する必要があります。
 
-　LogstashはRubyで作成されていますが、起動にJavaを必要とします。
+LogstashはRubyで作成されていますが、起動にJavaを必要とします。
 こちらもヒープメモリもかなり消費するツールなので注意が必要です。
 
 ==={logstash-com} Puppet、Chef、Ansibleの実行環境がある場合：Githubのレシピを利用
-　Elastic公式から各ツールのレシピが提供されているので、Githubからクローンして利用することも可能です。
+Elastic公式から各ツールのレシピが提供されているので、Githubからクローンして利用することも可能です。
 
 ==={logstash-win} Windows/Mac上に構築する場合：zipファイル
-　Windowsの場合、インストール方法はzipファイル一択となります。Macはbrewコマンドを用いることで
+Windowsの場合、インストール方法はzipファイル一択となります。Macはbrewコマンドを用いることで
 インストールすることもできますが、Elastic公式ではサポートされていないようなので、
 今回はインストール方法から除外しています。
 
 == zipファイルを用いたインストール(Logstash)
 
-　ElasticSearhのインストール方法に合わせるため、6のzipファイルを用いたインストール方法を取ります。
+ElasticSearhのインストール方法に合わせるため、6のzipファイルを用いたインストール方法を取ります。
 こちらも、OSごとに手順に差はありません。
 
 ==={logstash-dl} 公式サイトからzipファイルをダウンロード
 
-　Elasticの公式サイトにアクセスし、zipファイルをダウンロードします。
+Elasticの公式サイトにアクセスし、zipファイルをダウンロードします。
 
 //image[logstash_download][Logstashのダウンロード]{
   /Users/mallow/review/text/text/images/logstash_download.png
@@ -221,7 +221,7 @@ ElasticSearhと同様です。
 
 ==={logstash-unzip} zipファイルの解凍
 
-　ElasticSearhをインストールする際に作成したディレクトリに、ダウンロードしたzipファイルを解凍します。
+ElasticSearhをインストールする際に作成したディレクトリに、ダウンロードしたzipファイルを解凍します。
 ディレクトリ構成は一例です。
 
 //cmd{
@@ -230,7 +230,7 @@ unzip logstash-5.2.2
 
 ==={logstash-conf} 動作確認用のlogstash.conf作成
 
-　この後の章で詳しく述べますが、Logstashはlogstash.confを読み込むことで
+この後の章で詳しく述べますが、Logstashはlogstash.confを読み込むことで
 ファイルの取り込み元などを指定します。まずは動作確認用に次のコードをconfファイルへ記述します。
 
 //cmd{
@@ -238,7 +238,7 @@ unzip logstash-5.2.2
 logstash-5.2.2 mofumofu$ touch logstash.conf
 //}
 
-　次に、logstash.confを編集します。
+次に、logstash.confを編集します。
 //cmd{
 # logstash.confの編集
 logstash-5.2.2 mofumofu$ vi logstash.conf
@@ -257,7 +257,7 @@ output {
 
 ==={logstash-test} 動作確認
 
-　@<tt>{/bin}下にある@<tt>{logstash}スクリプトから、Logstashを起動します。
+@<tt>{/bin}下にある@<tt>{logstash}スクリプトから、Logstashを起動します。
 OSがWindowsの場合、同階層に@<tt>{logstash.bat}が配置されているのでそちらを起動しましょう。
 @<tt>{logstash.conf}にタイプミスがない場合、<@<tt>{"Logstash startup completed"}と出力されます。
 コマンドプロンプトに好きな文字列を打ち込んでみましょう。
@@ -286,17 +286,17 @@ hello world
 
 == Kibanaのインストール
 
-　Kibanaも他ツールと同様、インストール方法が複数準備されています。
+Kibanaも他ツールと同様、インストール方法が複数準備されています。
 種類はElasticSearh・Logstashと変わらないため、そちらの章を参照してください。
 
 ==={kibana-install} zipファイルを用いたインストール
 
-　ElasticSearhとLogstashのインストール方法に合わせるため、zipファイルを用いたインストール方法を選択しました。
+ElasticSearhとLogstashのインストール方法に合わせるため、zipファイルを用いたインストール方法を選択しました。
 こちらも、OSごとに手順に差はありません。
 
 ==={kibana-zip} 公式サイトからzipファイルをダウンロード
 
-　Elasticの公式サイトにアクセスし、zipファイルをダウンロードします。
+Elasticの公式サイトにアクセスし、zipファイルをダウンロードします。
 OSの種類によってzipファイルが異なるため、注意が必要です。
 
 //image[kibana_download][Kibanaのダウンロード]{
@@ -305,7 +305,7 @@ OSの種類によってzipファイルが異なるため、注意が必要です
 
 ==={kibana-unzip} zipファイルの解凍
 
-　ElasticSearhをインストールする際に作成したディレクトリに、ダウンロードしたzipファイルを解凍します。
+ElasticSearhをインストールする際に作成したディレクトリに、ダウンロードしたzipファイルを解凍します。
 
 //cmd{
 unzip kibana-5.2.2-darwin-x86_64.tar.gz
@@ -313,7 +313,7 @@ unzip kibana-5.2.2-darwin-x86_64.tar.gz
 
 ==={kibana-yml} kibana.ymlの編集
 
-　前にも述べた通り、KibanaはElasticSearhからデータを取得するためElasticSearhのURLを指定する必要があります。
+前にも述べた通り、KibanaはElasticSearhからデータを取得するためElasticSearhのURLを指定する必要があります。
 kibana.yml内にURLを指定する箇所があるのでそちらを記述しましょう。下に記載している場所を編集すれば良いです。
 
 //cmd{
@@ -327,7 +327,7 @@ elasticsearch.url: "http://localhost:9200"
 
 ==={kibana-test} 動作確認
 
-　/binフォルダ下にあるkibanaスクリプトから起動します。（Windowsはkibana.batから起動します。）
+/binフォルダ下にあるkibanaスクリプトから起動します。（Windowsはkibana.batから起動します。）
 
 //cmd{
 kibana-5.2.2-darwin-x86_64 mofumofu$ bin/kibana
