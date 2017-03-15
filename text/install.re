@@ -84,7 +84,7 @@ zipファイルを用いたインストールの場合、OSが違っていても
 
 Elasticの公式サイトにアクセスし、zipファイルをダウンロードします。
 
-@<href>{https://www.elastic.co/jp/downloads/Elasticsearch}
+@<href>{https://www.elastic.co/jp/downloads/elasticsearch}
 
 //image[Elasticsearch_download][Elasticsearchのダウンロード]{
 /Users/mallow/review/text/text/images/Elasticsearch_download.png
@@ -215,6 +215,8 @@ Elasticsearchのインストール方法に合わせるため、6のzipファイ
 
 Elasticの公式サイトにアクセスし、zipファイルをダウンロードします。
 
+@<href>{https://www.elastic.co/jp/downloads/logstash}
+
 //image[logstash_download][Logstashのダウンロード]{
   /Users/mallow/review/text/text/images/logstash_download.png
 //}
@@ -298,6 +300,8 @@ ElasticsearchとLogstashのインストール方法に合わせるため、zip�
 
 Elasticの公式サイトにアクセスし、zipファイルをダウンロードします。
 OSの種類によってzipファイルが異なるため、注意が必要です。
+
+@<href>{https://www.elastic.co/jp/downloads/kibana}
 
 //image[kibana_download][Kibanaのダウンロード]{
 /Usersmofumofu/review/text/text/images/kibana_download.png
