@@ -70,7 +70,7 @@ filterは、ログをどのように加工・整形するか決める部分で�
 
 === output
 outputは、ログをどこに送るか指定する部分です。
-前の章でも述べた通り、ElasticSearhへのデータ送付以外にもCSV形式など
+前の章でも述べた通り、Elasticsearchへのデータ送付以外にもCSV形式など
 指定した拡張子でデータを出力することも可能です。
 
 //image[logstash_config_output][logstash.conf（output）]{
@@ -233,16 +233,16 @@ output{
 //}
 
 == outputプラグイン
-Kibana上でグラフを作成するためにはElasticSearhにデータが入っている必要があります。
+Kibana上でグラフを作成するためにはElasticsearchにデータが入っている必要があります。
 このままでは標準出力に取り込んだデータが出てくるだけなので、outputプラグインを用いて
 データの送り先を指定します。
 
-=== ElasticSearhにデータを送る
-ElasticSearhにログを送付するには@<tt>{elasticsearch}プラグインを利用します。
-必須項目はありませんが、ElasticSearhのホスト名を指定しないと@<href>{127.0.0.1}にアクセスします。
+=== Elasticsearchにデータを送る
+Elasticsearchにログを送付するには@<tt>{elasticsearch}プラグインを利用します。
+必須項目はありませんが、Elasticsearchのホスト名を指定しないと@<href>{127.0.0.1}にアクセスします。
 
 hostsを明示s的に設定するためには@<b>{hosts}を利用します。
-@<code>{hosts => "ElasticSearhのアクセス用URL"}で指定します。
+@<code>{hosts => "Elasticsearchのアクセス用URL"}で指定します。
 
 //emlist[elasticsearchプラグインの指定]{
 output {
@@ -253,7 +253,7 @@ output {
 //}
 
 === 送付先indexの指定
-ElasticSearhはデータの持ち方が@<b>{field}に対する@<b>{text}という構造になっています。
+Elasticsearchはデータの持ち方が@<b>{field}に対する@<b>{text}という構造になっています。
 fieldとは、データベースでのカラムに相当します。textはカラムの中に入っている実データです。
 カラムの中にデータを入れるのと同じように、field内に実際のデータ（@<tt>{text})を保持します。
 このfieldの集まりを@<tt>{index}といいます。
@@ -266,7 +266,7 @@ index => "%{index名}-%{+YYYY.MM.dd}"
 //}
 
 今回はindex名は変更せず、デフォルトの設定のまま利用することにします。
-ただElasticSearhに大量のデータを集める場合、indexを明示的に指定することで
+ただElasticsearchに大量のデータを集める場合、indexを明示的に指定することで
 Kibanaを用いてデータを取り出す速度を上げることができます。
 
 これで、outputプラグインも書くことができました。
@@ -543,7 +543,7 @@ output{
 //}
 
 実際のデータとLogstashへの取り込み結果を比較してみます。出力結果は標準出力の結果ですが
-ElasticSearhにも同じように連携されます。
+Elasticsearchにも同じように連携されます。
 
 //emlist[取り込んだデータ]{
 "730751058306162689","160512 222643","いちごメロンパン食べたい #precure"
@@ -560,4 +560,4 @@ ElasticSearhにも同じように連携されます。
 //}
 
 次は、Logstashで取り込んだデータをグラフで可視化しましょう。
-ElasticSearhを起動後、Logstashを連携してログを連携しておきます。
+Elasticsearchを起動後、Logstashを連携してログを連携しておきます。

@@ -1,6 +1,6 @@
 = Kibanaを使ったデータの閲覧
 
-集めたデータを見る前に、ElasticSearchとKibanaの順にサービスを起動しておきましょう。
+集めたデータを見る前に、ElasticsearchとKibanaの順にサービスを起動しておきましょう。
 無事、サービス起動できたらKibanaにアクセスします。
 
 == KibanaのUI
@@ -8,7 +8,7 @@ Kibana画面は大きく分けて、データを分析する画面とグラフ�
 
 === Discover：データの詳細を閲覧する
 
-Discoverは、ElasticSearchのindex内に保持されている生データを閲覧できる箇所です。
+Discoverは、Elasticsearchのindex内に保持されている生データを閲覧できる箇所です。
 fieldごとに分割されたログの詳細をはもちろん、fieldごとのデータのサマリ情報や
 何時頃そのログが出力されたか棒グラフを用いて確認することもできます。
 
@@ -20,7 +20,7 @@ fieldごとに分割されたログの詳細をはもちろん、fieldごとの�
 
 取り込まれたログを使って棒グラフや折れ線グラフを作成する場所です。
 グラフは保存しておくことができるので、昔作ったログを呼び出して参照することも可能です。
-ちなみにですが、グラフの保存先はElasticSearchの中です。
+ちなみにですが、グラフの保存先はElasticsearchの中です。
 
 //image[kibana_Visualize][Visualize画面の例]{
   Visualizeの画面キャプチャ
@@ -44,16 +44,16 @@ Timelionでは1つの画面に線グラフと棒グラフを両立させるこ�
 そちらのグラフと同じ画面です。
 今回はデータ種別がテキストと日付しかないため扱いません。
 
-=== Dev Tools：ElasticSearch用のクエリをテストする
-ElasticSearchからデータを取得するためには、curlコマンドでGETをElasticSearchに投げます。
-Dev ToolsではElasticSearchに直接クエリを投げることができます。
+=== Dev Tools：Elasticsearch用のクエリをテストする
+Elasticsearchからデータを取得するためには、curlコマンドでGETをElasticsearchに投げます。
+Dev ToolsではElasticsearchに直接クエリを投げることができます。
 
 //image[kibana_DevTools][DevTools画面の例]{
   画面キャプチャ
 //}
 
 === Management：Kibanaの設定画面
-ElasticSearchのindex情報が更新されたときや、必要なくなったグラフを削除したいときに使用します。
+Elasticsearchのindex情報が更新されたときや、必要なくなったグラフを削除したいときに使用します。
 名前の通り設定画面です。
 
 == Discover画面を使ってみよう
@@ -61,7 +61,7 @@ ElasticSearchのindex情報が更新されたときや、必要なくなった�
 
 === indexの紐付け
 まず初めに、データを表示できる状態にします。
-KibanaはElasticSearchのindexからデータを取得していますが、ElasticSearchは複数indexを持つことができます。
+KibanaはElasticsearchのindexからデータを取得していますが、Elasticsearchは複数indexを持つことができます。
 Kibanaで利用するindexを指定してあげないと、どの情報を出せばいいのかわかりません。
 
 なので、Logstashの動作確認時に一度どのindexを使うのか指定したのです。
@@ -96,15 +96,15 @@ Kibanaで利用するindexを指定してあげないと、どの情報を出せ
   キャプチャを貼る
 //}
 
-デフォルトは直近15分の間でElasticSearch内にあるデータが表示されます。データが
+デフォルトは直近15分の間でElasticsearch内にあるデータが表示されます。データが
 何もない場合、@<tt>{Not found}画面が表示されます。データがある場合は
-X軸：時間・Y軸：データ件数の棒グラフと、実際にElasticSearchに取り込みされたデータが表示されます。
+X軸：時間・Y軸：データ件数の棒グラフと、実際にElasticsearchに取り込みされたデータが表示されます。
 
-//image[kibana_Dashboard_Notfound][ElasticSearchにデータがない場合のDashboard画面]{
+//image[kibana_Dashboard_Notfound][Elasticsearchにデータがない場合のDashboard画面]{
   キャプチャを貼る
 //}
 
-//image[kibana_Dashboard_Datafound][ElasticSearchにデータがある場合のDashboard画面]{
+//image[kibana_Dashboard_Datafound][Elasticsearchにデータがある場合のDashboard画面]{
   キャプチャを貼る
 //}
 

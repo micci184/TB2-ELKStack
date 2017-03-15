@@ -11,8 +11,8 @@
 
 == インストールの順番
 インストールの前に、どのツールからインストールするかを決めておきましょう。ELKのデータの流れを考えると、
-ElasticSearch→Logstash→Kibanaの順にインストールすることをお勧めします。
-理由は図X.Xにあるように、Logstashで取りこんだデータをElasticSearchに連携するため
+Elasticsearch→Logstash→Kibanaの順にインストールすることをお勧めします。
+理由は図X.Xにあるように、Logstashで取りこんだデータをElasticsearchに連携するため
 先にデータの連携先をセットアップしておかないと正しく動作確認ができない可能性があるためです。
 
 //image[data][データ連携の流れ]{
@@ -20,7 +20,7 @@ ElasticSearch→Logstash→Kibanaの順にインストールすることをお�
   /Users/mallow/review/text/text/images/data.png
 //}
 
-また、Kibanaは起動前にElasticSearchのURLを指定する必要があるため、ElasticSearchがセットアップされていないと
+また、Kibanaは起動前にElasticsearchのURLを指定する必要があるため、Elasticsearchがセットアップされていないと
 そもそも動作しません。今回は各ツールごとに完結できる動作確認方法を取りますが、万が一に備えるという意味では
 図X.Xのようにデータの連携先→連携元→データ閲覧ツールという流れでセットアップした方が良いでしょう。
 
@@ -29,7 +29,7 @@ ElasticSearch→Logstash→Kibanaの順にインストールすることをお�
   /Users/mallow/review/text/text/images/data.png
 //}
 
-== ElasticSearhのインストール
+== Elasticsearchのインストール
 先にも述べましたが、インストール方法は複数準備されています。導入の目的とご自身の環境に合わせて
 ベストなものを選択すると良いでしょう。
 
@@ -45,9 +45,9 @@ Elastic公式から提供されているrpmパッケージを利用した場合�
 運用を検討している場合は、初めからこちらのやり方を取っておけば環境の再構築を防ぐことができます。
 
 例）
-* コンフィグファイルの配置先：/etc/elasticsearch/
-* ログファイルの出力先：/var/log/elasticsearch
-* 基本的なファイルの配置先：/opt/elasticsearch
+* コンフィグファイルの配置先：/etc/Elasticsearch/
+* ログファイルの出力先：/var/log/Elasticsearch
+* 基本的なファイルの配置先：/opt/Elasticsearch
 
 === ちゃんと運用もしたい場合（debパッケージを利用するLinux）：debパッケージ
 こちらも2のやり方と同様です。違いはUbuntu系のLinux用パッケージを使うか、
@@ -58,7 +58,7 @@ Elastic StackをDocker社が利用していることもあってか、Elastic公
 手っ取り早く試してみたい場合、かつDockerコンテナの実行環境がある場合は素直にコンテナを利用した方が良いでしょう。
 ただし、インストール方式の2.3に移行を考えている場合、構成がかなり変わるので初めからパッケージ利用での環境構築方法を選択した方が良さそうです。
 
-また、ElasticSearhは物理的にも、Javaのヒープメモリもかなり消費するツールです。
+また、Elasticsearchは物理的にも、Javaのヒープメモリもかなり消費するツールです。
 Dockerコンテナ上ではあまり性能が出ないため、大量のデータを流す予定がある場合はコンテナ利用を避けた方が良いです。
 
 === Puppet、Chef、Ansibleの実行環境がある場合：Githubのレシピを利用
@@ -74,7 +74,7 @@ Windowsの場合、インストール方法はzipファイル一択となりま�
 インストールしているように見えるため、公式の最新ファイルをダウンロードしてインストールするのと特に変わらないと思います。
 好みで選択すると良いでしょう。
 
-== zipファイルを用いたインストール（ElasticSearh）
+== zipファイルを用いたインストール（Elasticsearch）
 
 今回は6のzipファイルを用いたインストール方法を取りたいと思います。
 zipファイルを用いたインストールの場合、OSが違っていても基本的な手順は同じです。
@@ -84,10 +84,10 @@ zipファイルを用いたインストールの場合、OSが違っていても
 
 Elasticの公式サイトにアクセスし、zipファイルをダウンロードします。
 
-@<href>{https://www.elastic.co/jp/downloads/elasticsearch}
+@<href>{https://www.elastic.co/jp/downloads/Elasticsearch}
 
-//image[elasticsearch_download][ElasticSearhのダウンロード]{
-/Users/mallow/review/text/text/images/elasticsearch_download.png
+//image[Elasticsearch_download][Elasticsearchのダウンロード]{
+/Users/mallow/review/text/text/images/Elasticsearch_download.png
 //}
 
 === 作業用ディレクトリを作成（好みで良いです）
@@ -104,17 +104,17 @@ $ mkdir ELK_Stack
 
 //cmd{
 # 必要であれば
-$ unzip elasticsearch-5.2.2
+$ unzip Elasticsearch-5.2.2
 //}
 
 
-=== ElasticSearhの起動
+=== Elasticsearchの起動
 
-@<tt>{/bin}ディレクトリ下にある@<tt>{elasticsearch}スクリプトを実行し、サービスを起動します。
-OSがWindowsの場合、@<tt>{elasticsearch.bat}を実行します。
+@<tt>{/bin}ディレクトリ下にある@<tt>{Elasticsearch}スクリプトを実行し、サービスを起動します。
+OSがWindowsの場合、@<tt>{Elasticsearch.bat}を実行します。
 
 //cmd{
-$ elasticsearch-5.2.2 mofumofu$ bin/elasticsearch
+$ Elasticsearch-5.2.2 mofumofu$ bin/Elasticsearch
 [2017-03-05T15:49:00,854][INFO ][o.e.n.Node               ] [] initializing ...
 [2017-03-05T15:49:01,004][INFO ][o.e.e.NodeEnvironment    ] [asgUjsK] using [1] data paths, mounts [[/ (/dev/disk1)]], net usable_space [123.8gb], net total_space [232.6gb], spins? [unknown], types [hfs]
 [2017-03-05T15:49:01,005][INFO ][o.e.e.NodeEnvironment    ] [asgUjsK] heap size [1.9gb], compressed ordinary object pointers [true]
@@ -142,15 +142,15 @@ $ elasticsearch-5.2.2 mofumofu$ bin/elasticsearch
 
 === 動作確認
 
-ElasticSearuへクエリを投げ、返り値があるか確認します。
+Elasticsearchへクエリを投げ、返り値があるか確認します。
 返り値が帰ってくれば、正常にインストールできています。
 
 //cmd{
-# elasticsearchの稼動確認
+# Elasticsearchの稼動確認
 $ curl http://localhost:9200/
 {
   "name" : "asgUjsK",
-  "cluster_name" : "elasticsearch",
+  "cluster_name" : "Elasticsearch",
   "cluster_uuid" : "aK9PZbz4SCSbg3Bi_j_R_g",
   "version" : {
     "number" : "5.2.2",
@@ -165,23 +165,23 @@ $ curl http://localhost:9200/
 
 もしくはGoogle Chrome上でURLにアクセスし、同じような返り値があればOKです。
 
-//image[localhost_9200][ElasticSearhの起動確認]{
+//image[localhost_9200][Elasticsearchの起動確認]{
 /Users/mallow/review/text/text/images/localhost_9200.png
 //}
 
 == Logstashのインストール
 
-LogstashもElasticSearhと同様、インストール方式を選択することが可能です。
+LogstashもElasticsearchと同様、インストール方式を選択することが可能です。
 ただ、ツールごとにインストール方式を分けるやり方は、ディレクトリ構造が異なってしまうため避けた方が良いです。
 
 ==={logstash-zip} とにかく使ってみたい場合（Linux）：zipファイル
 
-こちらもElasticSearhと同様、zipファイルを展開するだけでインストールが終了します。
+こちらもElasticsearchと同様、zipファイルを展開するだけでインストールが終了します。
 serviceコマンドは付属しません。
 
 ==={logstash-rpm}  ちゃんと運用もしたい場合（rpmパッケージを利用するLinux）：rpmパッケージ
 こちらもserviceコマンドの存在や、ディレクトリ構成が自動で割り当てられる点なども
-ElasticSearhと同様です。
+Elasticsearchと同様です。
 
 例）
 * コンフィグファイルの配置先：/etc/logstash/
@@ -189,11 +189,11 @@ ElasticSearhと同様です。
 * 基本的なファイルの配置先：/opt/logstash/
 
 ==={logstash-deb} ちゃんと運用もしたい場合（debパッケージを利用するLinux）：debパッケージ
-こちらもElasticSearhと同様です。
+こちらもElasticsearchと同様です。
 
 ==={logstash-docker} とにかく使ってみたい場合かつ、Docker実行環境がある場合：Dockerコンテナ
-ElasticSearhと同様、Elastic社からDockerコンテナが提供されています。
-ただし、ElasticSearhとは別のコンテナのため、同時にコンテナを複数起動する必要があります。
+Elasticsearchと同様、Elastic社からDockerコンテナが提供されています。
+ただし、Elasticsearchとは別のコンテナのため、同時にコンテナを複数起動する必要があります。
 
 LogstashはRubyで作成されていますが、起動にJavaを必要とします。
 こちらもヒープメモリもかなり消費するツールなので注意が必要です。
@@ -208,7 +208,7 @@ Windowsの場合、インストール方法はzipファイル一択となりま�
 
 == zipファイルを用いたインストール(Logstash)
 
-ElasticSearhのインストール方法に合わせるため、6のzipファイルを用いたインストール方法を取ります。
+Elasticsearchのインストール方法に合わせるため、6のzipファイルを用いたインストール方法を取ります。
 こちらも、OSごとに手順に差はありません。
 
 ==={logstash-dl} 公式サイトからzipファイルをダウンロード
@@ -221,7 +221,7 @@ Elasticの公式サイトにアクセスし、zipファイルをダウンロー�
 
 ==={logstash-unzip} zipファイルの解凍
 
-ElasticSearhをインストールする際に作成したディレクトリに、ダウンロードしたzipファイルを解凍します。
+Elasticsearchをインストールする際に作成したディレクトリに、ダウンロードしたzipファイルを解凍します。
 ディレクトリ構成は一例です。
 
 //cmd{
@@ -287,11 +287,11 @@ hello world
 == Kibanaのインストール
 
 Kibanaも他ツールと同様、インストール方法が複数準備されています。
-種類はElasticSearh・Logstashと変わらないため、そちらの章を参照してください。
+種類はElasticsearch・Logstashと変わらないため、そちらの章を参照してください。
 
 ==={kibana-install} zipファイルを用いたインストール
 
-ElasticSearhとLogstashのインストール方法に合わせるため、zipファイルを用いたインストール方法を選択しました。
+ElasticsearchとLogstashのインストール方法に合わせるため、zipファイルを用いたインストール方法を選択しました。
 こちらも、OSごとに手順に差はありません。
 
 ==={kibana-zip} 公式サイトからzipファイルをダウンロード
@@ -305,7 +305,7 @@ OSの種類によってzipファイルが異なるため、注意が必要です
 
 ==={kibana-unzip} zipファイルの解凍
 
-ElasticSearhをインストールする際に作成したディレクトリに、ダウンロードしたzipファイルを解凍します。
+Elasticsearchをインストールする際に作成したディレクトリに、ダウンロードしたzipファイルを解凍します。
 
 //cmd{
 unzip kibana-5.2.2-darwin-x86_64.tar.gz
@@ -313,15 +313,15 @@ unzip kibana-5.2.2-darwin-x86_64.tar.gz
 
 ==={kibana-yml} kibana.ymlの編集
 
-前にも述べた通り、KibanaはElasticSearhからデータを取得するためElasticSearhのURLを指定する必要があります。
+前にも述べた通り、KibanaはElasticsearchからデータを取得するためElasticsearchのURLを指定する必要があります。
 kibana.yml内にURLを指定する箇所があるのでそちらを記述しましょう。下に記載している場所を編集すれば良いです。
 
 //cmd{
 # 前後は省略
 --------------------------------------------------------------------
 # The URL of the Elasticsearch instance to use for all your queries.
-#elasticsearch.url: "http://localhost:9200"
-elasticsearch.url: "http://localhost:9200"
+#Elasticsearch.url: "http://localhost:9200"
+Elasticsearch.url: "http://localhost:9200"
 --------------------------------------------------------------------
 //}
 
@@ -332,13 +332,13 @@ elasticsearch.url: "http://localhost:9200"
 //cmd{
 kibana-5.2.2-darwin-x86_64 mofumofu$ bin/kibana
   log   [07:46:54.934] [info][status][plugin:kibana@5.2.2] Status changed from uninitialized to green - Ready
-  log   [07:46:55.016] [info][status][plugin:elasticsearch@5.2.2] Status changed from uninitialized to yellow - Waiting for Elasticsearch
+  log   [07:46:55.016] [info][status][plugin:Elasticsearch@5.2.2] Status changed from uninitialized to yellow - Waiting for Elasticsearch
   log   [07:46:55.046] [info][status][plugin:console@5.2.2] Status changed from uninitialized to green - Ready
   log   [07:46:55.900] [info][status][plugin:timelion@5.2.2] Status changed from uninitialized to green - Ready
   log   [07:46:55.906] [info][listening] Server running at http://localhost:5601
   log   [07:46:55.907] [info][status][ui settings] Status changed from uninitialized to yellow - Elasticsearch plugin is yellow
-  log   [07:47:00.943] [info][status][plugin:elasticsearch@5.2.2] Status changed from yellow to yellow - No existing Kibana index found
-  log   [07:47:01.661] [info][status][plugin:elasticsearch@5.2.2] Status changed from yellow to green - Kibana index ready
+  log   [07:47:00.943] [info][status][plugin:Elasticsearch@5.2.2] Status changed from yellow to yellow - No existing Kibana index found
+  log   [07:47:01.661] [info][status][plugin:Elasticsearch@5.2.2] Status changed from yellow to green - Kibana index ready
   log   [07:47:01.662] [info][status][ui settings] Status changed from yellow to green - Ready
 //}
 

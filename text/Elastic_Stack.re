@@ -18,12 +18,12 @@
 データベース（RSDB）に接続して情報を抜いてくる事も可能です。RSDBと連携する際はSQL文を用いて情報を取得するため
 SQLが得意な人は自分の欲しい情報だけSQLで取得し、あとはログを連携するだけといった事も実現できます。
 
-　ログの出力先ですが、このあと出てくるElasticSearchだけでなく、プロジェクトの進捗状況管理ツールである
+　ログの出力先ですが、このあと出てくるElasticsearchだけでなく、プロジェクトの進捗状況管理ツールである
 Redmineに送付する事もできます。取り込みした情報をCSVファイルとして出力したりsyslogとして転送することができるので
 利用方法によってはログ解析以上の威力を発揮するツールだと言えます。
 
-== ElasticSearch
-　ElasticSearchは、Javaで作られている分散処理型の検索エンジンです。クラスタ構成を組むことができるのが特徴なので、
+== Elasticsearch
+　Elasticsearchは、Javaで作られている分散処理型の検索エンジンです。クラスタ構成を組むことができるのが特徴なので、
 大規模な環境で検索エンジンとして利用されることが多いです。某新聞のWebサイト内の検索、
 Dockerのコンテナ検索、Facebook上での検索などが導入事例として有名です。
 
@@ -35,16 +35,16 @@ Dockerのコンテナ検索、Facebook上での検索などが導入事例とし
 /Users/mallow/review/text/text/images/cluster01.png
 //}
 
-//image[cluster02][クラスターを利用する場合]{ 
+//image[cluster02][クラスターを利用する場合]{
 配置パス
 /Users/mallow/review/text/text/images/cluster02.png
 //}
 
 　もちろん、ログ解析を行うときもよく使用されます。理由としては次に出てくるKibanaの情報取得元が
-ElasticSearchに限られているからです。
+Elasticsearchに限られているからです。
 
 == Kibana
-　Kibanaは、ElasticSearchに貯められている情報を整形して可視化する情報分析ツールです。
+　Kibanaは、Elasticsearchに貯められている情報を整形して可視化する情報分析ツールです。
 開発言語はアナウンスは出ていないものの、ソース情報を見る限りJavaScriptがメインだと思われます。
 Google Chrome等のブラウザからKibana指定のURLにアクセスすることで、データ情報を表示することができます。
 
@@ -53,7 +53,7 @@ Google Chrome等のブラウザからKibana指定のURLにアクセスするこ�
 全て完結する仕組みとなっています。
 
 == Beats
-　Beatsはサーバにインストールすることで、サーバ内のマシンデータをElasticSearchやLogstashに転送する
+　Beatsはサーバにインストールすることで、サーバ内のマシンデータをElasticsearchやLogstashに転送する
 簡易的なデータ収集ツールです。サーバのリソース情報以外にもネットワークのパケット情報・Windowsのイベントログを収集することが
 できるため、Logstashでカバーしきれない範囲の情報を集めてくることができます。
 Logstashにログを転送することで、他のログと同じように加工・転送が可能となるため、痒いところに手がとどくツールという位置づけです。
@@ -62,6 +62,6 @@ Logstashにログを転送することで、他のログと同じように加工
 
 == 基本的な構成
 
-　今回はBeatsは扱わず、ログを収集するLogstash、ログを貯めておくElasticSearch、ログを閲覧するKibanaを基本構成とします。
-この3つのツールで構成されている状態は「ELK」と省略されて呼ばれることが多いです。この本でもこれ以降はLogstash、ElasticSearch、Kibanaの
+　今回はBeatsは扱わず、ログを収集するLogstash、ログを貯めておくElasticsearch、ログを閲覧するKibanaを基本構成とします。
+この3つのツールで構成されている状態は「ELK」と省略されて呼ばれることが多いです。この本でもこれ以降はLogstash、Elasticsearch、Kibanaの
 3つをまとめて扱う際は「ELK」と省略して呼ぶこととします。
